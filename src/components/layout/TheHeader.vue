@@ -11,7 +11,7 @@ import { inject } from "vue";
 const topics = inject("topics");
 
 function topicRoute(topic) {
-  return `/topics/1/topic${topic.id}`;
+  return `/daily-task-project/topics/1/topic${topic.id}`;
 }
 </script>
 
@@ -36,7 +36,7 @@ function topicRoute(topic) {
         <p>Setting</p>
       </li>
 
-      <base-button link to="/topics/1">
+      <base-button link to="/daily-task-project/topics/1">
         <li class="my-list">
           <PresentationChartLineIcon
             class="my-list-icon"
