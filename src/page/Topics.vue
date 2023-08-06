@@ -3,14 +3,24 @@ import TheHeaderStore from "../store/TheHeaderStore.vue";
 </script>
 
 <template>
-  <section class="grid grid-cols-myTemplate h-screen w-screen">
-    <the-top-header></the-top-header>
+  <section class="my-section-topics">
+    <!-- <the-top-header></the-top-header> -->
     <TheHeaderStore>
       <the-header></the-header>
     </TheHeaderStore>
 
     <TheHeaderStore>
-      <RouterView class="col-start-2"></RouterView>
+      <RouterView></RouterView>
     </TheHeaderStore>
   </section>
 </template>
+
+<style scoped>
+.my-section-topics {
+  @apply relative 
+  
+  
+  xl:mx-36
+  2xl:mx-64;
+}
+</style>

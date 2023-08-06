@@ -1,3 +1,5 @@
 <template>
-  <h2 class="text-slate-800">topic6</h2>
+  <section class="p-10 ml-60 text-slate-800">
+    <h2>Topic6</h2>
+  </section>
 </template>

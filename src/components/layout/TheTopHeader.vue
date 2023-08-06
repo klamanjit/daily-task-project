@@ -13,8 +13,8 @@ const nextUpTaskLength = computed(() => {
 </script>
 
 <template>
-  <div class="absolute top-0 right-0">
-    <ul class="flex gap-2 text-slate-900 p-8">
+  <section>
+    <ul class="flex gap-2 text-slate-900">
       <li>
         <MagnifyingGlassIcon
           class="h-9 w-9 bg-slate-900 p-2 bg-opacity-10 text-slate-900 rounded-full"
@@ -35,7 +35,7 @@ const nextUpTaskLength = computed(() => {
         />
       </li>
     </ul>
-  </div>
+  </section>
 </template>
 
 <style scoped>
