@@ -13,7 +13,7 @@
   @apply relative 
   
   
-  xl:mx-36
-  2xl:mx-64;
+  /* xl:mx-36
+  2xl:mx-64 */;
 }
 </style>

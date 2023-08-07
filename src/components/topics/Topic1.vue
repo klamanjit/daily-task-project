@@ -34,7 +34,7 @@ const topic1 = computed(() => {
 </script>
 
 <template>
-  <section class="p-10 ml-60 text-slate-800">
+  <section class="py-10 px-20 ml-60 text-slate-800">
     <div class="flex justify-between items-center">
       <h1 class="mb-8 md:text-4xl 2xl:text-5xl font-bold">
         {{ topic1 }}

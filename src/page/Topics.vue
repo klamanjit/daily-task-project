@@ -56,11 +56,7 @@ function topicRoute(topic) {
 
 <style scoped>
 .my-section-topics {
-  @apply relative 
-  
-  
-  xl:mx-36
-  2xl:mx-64;
+  @apply relative;
 }
 
 .my-card-container-topics {
