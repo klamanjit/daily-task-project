@@ -1,12 +1,9 @@
-<script setup>
-import TheHeaderStore from "../store/TheHeaderStore.vue";
-</script>
+<script setup></script>
 
 <template>
   <section class="my-section-home">
-    <TheHeaderStore>
-      <the-header></the-header>
-    </TheHeaderStore>
+    <the-header></the-header>
+
     <h2 class="ml-56">Home</h2>
   </section>
 </template>

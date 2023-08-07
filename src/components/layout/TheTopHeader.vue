@@ -14,10 +14,10 @@ const nextUpTaskLength = computed(() => {
 
 <template>
   <section>
-    <ul class="flex gap-2 text-slate-900">
+    <ul class="flex gap-3 text-slate-900">
       <li>
         <MagnifyingGlassIcon
-          class="h-9 w-9 bg-slate-900 p-2 bg-opacity-10 text-slate-900 rounded-full"
+          class="h-10 w-10 bg-slate-900 p-2 bg-opacity-10 text-slate-900 rounded-full"
         ></MagnifyingGlassIcon>
       </li>
       <li class="relative">
@@ -31,7 +31,7 @@ const nextUpTaskLength = computed(() => {
         <img
           src="../../assets/header/1.jpg"
           alt="cat-profile"
-          class="h-9 w-9 rounded-full object-cover"
+          class="h-10 w-10 rounded-full object-cover"
         />
       </li>
     </ul>
@@ -40,6 +40,6 @@ const nextUpTaskLength = computed(() => {
 
 <style scoped>
 .my-bell-icon {
-  @apply h-9 w-9 bg-slate-900 p-2 bg-opacity-10 text-slate-900 rounded-full;
+  @apply h-10 w-10 bg-slate-900 p-2 bg-opacity-10 text-slate-900 rounded-full;
 }
 </style>

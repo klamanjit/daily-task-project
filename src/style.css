@@ -22,7 +22,7 @@ body {
 
   background-color: #f8fafc;
   overflow-x: hidden;
-  overflow-y: hidden;
+  /* overflow-y: hidden; */
 }
 
 #app {

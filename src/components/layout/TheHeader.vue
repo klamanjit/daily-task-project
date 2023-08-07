@@ -7,9 +7,12 @@ import { PresentationChartLineIcon } from "@heroicons/vue/24/solid";
 import { PlayIcon } from "@heroicons/vue/24/solid";
 
 import { useRoute } from "vue-router";
-import { inject } from "vue";
+import { computed, inject } from "vue";
 
 const route = useRoute();
+const currentRoute = computed(() => {
+  return route.path;
+});
 console.log(route.params);
 
 const topics = inject("topics");
@@ -61,7 +64,8 @@ function topicRoute(topic) {
         <li
           class="my-list2"
           :class="{
-            showCard: route.params.topic1 === `topic${topic.id}`,
+            showCard:
+              route.path === `/daily-task-project/topics/1/topic${topic.id}`,
           }"
         >
           <PlayIcon class="my-playIcon"></PlayIcon>

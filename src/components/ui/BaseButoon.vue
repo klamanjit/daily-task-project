@@ -32,6 +32,6 @@ const props = defineProps({
 
 <style scoped>
 .my-base-button {
-  @apply block active:bg-black;
+  @apply block;
 }
 </style>

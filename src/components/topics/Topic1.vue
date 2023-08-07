@@ -76,7 +76,7 @@ const topic1 = computed(() => {
         <base-card class="my-base-card" draggable="true">
           <nav class="flex justify-between items-center mb-1">
             <p
-              class="bg-slate-500 bg-opacity-10 rounded-full text-sm text-center h-5 w-5"
+              class="bg-slate-500 bg-opacity-10 rounded-full text-base text-center h-5 w-5"
             >
               {{ task.emoji }}
             </p>
