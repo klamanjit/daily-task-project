@@ -13,12 +13,13 @@ const route = useRoute();
 const currentRoute = computed(() => {
   return route.path;
 });
-console.log(route.params);
+console.log(route.path);
 
 const topics = inject("topics");
 
 function topicRoute(topic) {
-  return `/daily-task-project/topics/1/topic${topic.id}`;
+  // return `/daily-task-project/topics/1/topic${topic.id}`;
+  return `/topics/1/topic${topic.id}`;
 }
 </script>
 
@@ -43,7 +44,7 @@ function topicRoute(topic) {
         <p>Setting</p>
       </li>
 
-      <base-button link to="/daily-task-project/topics/1">
+      <base-button link to="/topics/1">
         <li class="my-list">
           <PresentationChartLineIcon
             class="my-list-icon"
@@ -65,7 +66,8 @@ function topicRoute(topic) {
           class="my-list2"
           :class="{
             showCard:
-              route.path === `/daily-task-project/topics/1/topic${topic.id}`,
+              // route.path === `/daily-task-project/topics/1/topic${topic.id}`,
+              route.path === `/topics/1/topic${topic.id}`,
           }"
         >
           <PlayIcon class="my-playIcon"></PlayIcon>

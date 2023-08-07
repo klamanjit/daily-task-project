@@ -4,7 +4,7 @@
   <section class="my-section-home">
     <the-header></the-header>
 
-    <h2 class="ml-56">Home</h2>
+    <h2 class="ml-60 py-10 px-20 text-slate-800">Home</h2>
   </section>
 </template>
 

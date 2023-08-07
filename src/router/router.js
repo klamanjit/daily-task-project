@@ -11,13 +11,12 @@ import Topic6 from "../components/topics/Topic6.vue";
 import Topic7 from "../components/topics/Topic7.vue";
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory("/daily-task-project"),
   routes: [
-    { path: "/", redirect: "/daily-task-project" },
-    { path: "/daily-task-project", component: Home },
+    { path: "/", component: Home },
     {
-      // path: "/topics/1",
-      path: "/daily-task-project/topics/1",
+      path: "/topics/1",
+      // path: "/daily-task-project/topics/1",
       component: Topics,
       props: true,
       children: [

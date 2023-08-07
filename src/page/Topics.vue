@@ -10,17 +10,17 @@ const route = useRoute();
 console.log(route.path);
 
 const isTopicsPath = computed(() => {
-  return route.path === `/daily-task-project/topics/1`;
+  return route.path === `/topics/1`;
 });
 
 function topicRoute(topic) {
-  return `/daily-task-project/topics/1/topic${topic.id}`;
+  return `/topics/1/topic${topic.id}`;
 }
 </script>
 
 <template>
   <section class="my-section-topics">
-    <main class="p-10 ml-60 text-slate-800" v-if="isTopicsPath">
+    <main class="py-10 px-20 ml-60 text-slate-800" v-if="isTopicsPath">
       <div class="flex justify-between items-center mb-24">
         <div class="flex gap-4 justify-center items-center">
           <PresentationChartLineIcon
