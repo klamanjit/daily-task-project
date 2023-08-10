@@ -13,13 +13,12 @@ const route = useRoute();
 const currentRoute = computed(() => {
   return route.path;
 });
-console.log(route.path);
 
 const topics = inject("topics");
 
 function topicRoute(topic) {
   // return `/daily-task-project/topics/1/topic${topic.id}`;
-  return `/topics/1/topic${topic.id}`;
+  return `/topics/1/${topic.id}`;
 }
 </script>
 
@@ -67,7 +66,7 @@ function topicRoute(topic) {
           :class="{
             showCard:
               // route.path === `/daily-task-project/topics/1/topic${topic.id}`,
-              route.path === `/topics/1/topic${topic.id}`,
+              route.path === `/topics/1/${topic.id}`,
           }"
         >
           <PlayIcon class="my-playIcon"></PlayIcon>

@@ -1,43 +1,69 @@
 <script setup>
-import { computed, inject } from "vue";
+import { computed, inject, ref } from "vue";
+import { useRoute } from "vue-router";
+import RegisterTask from "./RegisterTask.vue";
 
 import { EllipsisHorizontalIcon } from "@heroicons/vue/24/solid";
 import { ClockIcon } from "@heroicons/vue/24/solid";
 
+const route = useRoute();
+
+console.log(route.params.topicId);
+
 const topics = inject("topics");
 const users = inject("users");
-const dailyTasks = inject("dailyTasks");
 
-const nextUpTask = dailyTasks.value.filter((task) => task.status === "NextUp");
-const InProgressTask = dailyTasks.value.filter(
-  (task) => task.status === "InProgress"
-);
-const CompleteTask = dailyTasks.value.filter(
-  (task) => task.status === "Complete"
-);
+const isAddCard = ref(false);
 
-const nextUpTaskLength = computed(() => {
-  return nextUpTask.length;
+const topicSelected = computed(() => {
+  const selectedTopic = topics.value.find(
+    (topic) => topic.id === route.params.topicId
+  );
+  return selectedTopic;
 });
 
-const InProgressTaskLength = computed(() => {
-  return InProgressTask.length;
+const topicHeader = computed(() => {
+  return topicSelected.value.emoji + " " + topicSelected.value.datail;
 });
 
-const CompleteTaskLength = computed(() => {
-  return CompleteTask.length;
+const topicTasks = computed(() => {
+  return topicSelected.value.tasks;
 });
 
-const topic1 = computed(() => {
-  return topics.value[0].emoji + " " + topics.value[0].datail;
+const nextUpTask = computed(() => {
+  return topicSelected.value.tasks.filter((task) => task.status === "NextUp");
 });
+
+const inProgressTask = computed(() => {
+  return topicSelected.value.tasks.filter(
+    (task) => task.status === "InProgress"
+  );
+});
+
+const completeTask = computed(() => {
+  return topicSelected.value.tasks.filter((task) => task.status === "Complete");
+});
+
+function changeAddCardToTrue() {
+  isAddCard.value = true;
+}
+
+function changeAddCardToFalse() {
+  isAddCard.value = false;
+}
 </script>
 
 <template>
+  <RegisterTask
+    v-if="isAddCard"
+    :show="isAddCard"
+    @close2="changeAddCardToFalse"
+  ></RegisterTask>
+
   <section class="py-10 px-20 ml-60 text-slate-800">
     <div class="flex justify-between items-center">
       <h1 class="mb-8 md:text-4xl 2xl:text-5xl font-bold">
-        {{ topic1 }}
+        {{ topicHeader }}
       </h1>
 
       <the-top-header></the-top-header>
@@ -46,10 +72,16 @@ const topic1 = computed(() => {
       class="text-slate-500 opacity-70 md:text-xs lg:text-sm xl:text-base 2xl:text-lg"
     >
       Click
-      <span
-        class="bg-slate-900 bg-opacity-10 p-1 text-blue-600 font-semibold md:text-xs lg:text-sm xl:text-base 2xl:text-lg;"
-        >+ New</span
+      <base-button
+        @click="changeAddCardToTrue"
+        mode="my-base-button-inline-block"
       >
+        <span
+          class="bg-slate-900 bg-opacity-10 p-1 text-blue-600 font-semibold md:text-xs lg:text-sm xl:text-base 2xl:text-lg;"
+          >+ New
+        </span>
+      </base-button>
+
       To create new list and wait for project manager card.
     </p>
     <p
@@ -61,18 +93,18 @@ const topic1 = computed(() => {
     <main class="my-card-container">
       <div class="my-grid-topic">
         <p>Next up</p>
-        <p class="my-grid-p">{{ nextUpTaskLength }}</p>
+        <p class="my-grid-p">{{ nextUpTask.length }}</p>
       </div>
       <div class="my-grid-topic">
         <p>In Progress</p>
-        <p class="my-grid-p">{{ InProgressTaskLength }}</p>
+        <p class="my-grid-p">{{ inProgressTask.length }}</p>
       </div>
       <div class="my-grid-topic">
         <p>Complete</p>
-        <p class="my-grid-p">{{ CompleteTaskLength }}</p>
+        <p class="my-grid-p">{{ completeTask.length }}</p>
       </div>
 
-      <div v-for="task in dailyTasks" :key="task.id">
+      <div v-for="task in topicTasks" :key="task.id">
         <base-card class="my-base-card" draggable="true">
           <nav class="flex justify-between items-center mb-1">
             <p

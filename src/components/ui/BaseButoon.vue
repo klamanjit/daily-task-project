@@ -34,4 +34,12 @@ const props = defineProps({
 .my-base-button {
   @apply block;
 }
+
+.my-base-button-inline-block {
+  @apply inline-block;
+}
+
+.my-basic-style {
+  @apply px-2 py-1 bg-blue-600 text-blue-50 rounded-sm;
+}
 </style>

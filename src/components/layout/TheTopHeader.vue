@@ -2,10 +2,26 @@
 import { MagnifyingGlassIcon } from "@heroicons/vue/24/solid";
 import { BellIcon } from "@heroicons/vue/24/solid";
 import { computed, inject } from "vue";
+import { useRoute } from "vue-router";
 
-const dailyTasks = inject("dailyTasks");
+const route = useRoute();
 
-const nextUpTask = dailyTasks.value.filter((task) => task.status === "NextUp");
+console.log(route.params.topicId);
+
+const topics = inject("topics");
+
+const topicSelected = computed(() => {
+  const selectedTopic = topics.value.find(
+    (topic) => topic.id === route.params.topicId
+  );
+  return selectedTopic;
+});
+
+console.log(topicSelected.value);
+
+const nextUpTask = computed(() => {
+  return topicSelected.value.tasks.filter((task) => task.status === "NextUp");
+});
 
 const nextUpTaskLength = computed(() => {
   return nextUpTask.length;
@@ -23,7 +39,7 @@ const nextUpTaskLength = computed(() => {
       <li class="relative">
         <span
           class="absolute -top-2 -right-1 bg-red-600 text-red-50 rounded-full w-5 h-5 py-0.5 text-xs text-center"
-          >{{ nextUpTaskLength }}</span
+          >{{ nextUpTask.length }}</span
         >
         <BellIcon class="my-bell-icon"></BellIcon>
       </li>
