@@ -1,13 +1,19 @@
 <script setup>
 import { MagnifyingGlassIcon } from "@heroicons/vue/24/solid";
 import { BellIcon } from "@heroicons/vue/24/solid";
-import { computed, inject } from "vue";
+import { computed, inject, ref } from "vue";
 import { useRoute } from "vue-router";
+import useValidateLogin from "../hooks/validateLogin";
 
 const route = useRoute();
 
-console.log(route.params.topicId);
+// emit function
+const emit = defineEmits(["search"]);
+function trySearch() {
+  emit("search", title.value.val, isSeearchBtn.value);
+}
 
+// Topic section
 const topics = inject("topics");
 
 const topicSelected = computed(() => {
@@ -17,8 +23,6 @@ const topicSelected = computed(() => {
   return selectedTopic;
 });
 
-console.log(topicSelected.value);
-
 const nextUpTask = computed(() => {
   return topicSelected.value.tasks.filter((task) => task.status === "NextUp");
 });
@@ -26,30 +30,99 @@ const nextUpTask = computed(() => {
 const nextUpTaskLength = computed(() => {
   return nextUpTask.length;
 });
+
+// Bell Button
+const isBellBtn = ref(false);
+// Search button
+const isSeearchBtn = ref(false);
+const title = ref({
+  val: "",
+  isValid: false,
+});
+
+// User button
+const isUserBtn = ref(false);
+
+const { logout } = useValidateLogin();
+
+// function logout() {
+//   localStorage.removeItem("token");
+//   router.replace("/");
+// }
 </script>
 
 <template>
   <section>
-    <ul class="flex gap-3 text-slate-900">
-      <li>
-        <MagnifyingGlassIcon
-          class="h-10 w-10 bg-slate-900 p-2 bg-opacity-10 text-slate-900 rounded-full"
-        ></MagnifyingGlassIcon>
-      </li>
+    <ul class="flex gap-3 text-slate-900 relative">
+      <Transition name="slide">
+        <div v-if="isSeearchBtn" class="absolute top-0 -left-44">
+          <form @submit.prevent="trySearch">
+            <input
+              type="text"
+              id="title"
+              v-model="title.val"
+              placeholder="Search for title"
+              class="block w-full h-10 border-none bg-slate-200 mb-2 p-2 rounded-md focus:outline-none focus:bg-blue-50 text-sm"
+            />
+          </form>
+        </div>
+      </Transition>
+
+      <base-button @click="isSeearchBtn = !isSeearchBtn">
+        <li>
+          <MagnifyingGlassIcon
+            class="h-10 w-10 bg-slate-900 p-2 bg-opacity-10 text-slate-900 rounded-full"
+          ></MagnifyingGlassIcon>
+        </li>
+      </base-button>
+
       <li class="relative">
         <span
           class="absolute -top-2 -right-1 bg-red-600 text-red-50 rounded-full w-5 h-5 py-0.5 text-xs text-center"
           >{{ nextUpTask.length }}</span
         >
-        <BellIcon class="my-bell-icon"></BellIcon>
+        <base-button @click="isBellBtn = !isBellBtn">
+          <BellIcon class="my-bell-icon"></BellIcon>
+        </base-button>
+        <Transition name="popup">
+          <base-card
+            v-if="isBellBtn"
+            class="absolute top-10 left-2 flex flex-col gap-1 text-xs"
+          >
+            <p
+              v-for="next in nextUpTask"
+              :key="next"
+              class="border border-s-slate-200 font-bold p-1 bg-green-500 text-green-50 text-center"
+            >
+              {{ next.title }}
+            </p>
+          </base-card>
+        </Transition>
       </li>
-      <li>
-        <img
-          src="../../assets/header/1.jpg"
-          alt="cat-profile"
-          class="h-10 w-10 rounded-full object-cover"
-        />
-      </li>
+
+      <base-button @click="isUserBtn = !isUserBtn">
+        <li class="relative">
+          <img
+            src="../../assets/header/1.jpg"
+            alt="cat-profile"
+            class="h-10 w-10 rounded-full object-cover"
+          />
+
+          <Transition name="popup">
+            <base-card
+              v-if="isUserBtn"
+              class="absolute w-20 top-10 left-2 flex flex-col gap-1 text-xs"
+            >
+              <base-button
+                class="border border-s-slate-200 p-1 text-slate-700 font-bold hover:bg-blue-500 hover:text-blue-50 transition-all duration-200 ease-in"
+                @click="logout"
+              >
+                Log-out
+              </base-button>
+            </base-card>
+          </Transition>
+        </li>
+      </base-button>
     </ul>
   </section>
 </template>
@@ -57,5 +130,36 @@ const nextUpTaskLength = computed(() => {
 <style scoped>
 .my-bell-icon {
   @apply h-10 w-10 bg-slate-900 p-2 bg-opacity-10 text-slate-900 rounded-full;
+}
+
+/* Trasition */
+.popup-enter-active,
+.popup-leave-active {
+  @apply transition-all duration-200 ease-linear;
+}
+
+.popup-enter-from,
+.popup-leave-to {
+  @apply opacity-0 scale-0;
+}
+
+.popup-enter-to,
+.popup-leave-from {
+  @apply opacity-100 scale-100;
+}
+
+.slide-enter-active,
+.slide-leave-active {
+  @apply transition-all duration-200 ease-linear;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  @apply opacity-0 w-0;
+}
+
+.slide-enter-to,
+.slide-leave-from {
+  @apply opacity-100 w-full;
 }
 </style>

@@ -1,35 +1,35 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 import Home from "../page/Home.vue";
-import TopicTest from "../page/TopicTest.vue";
-import TopicDetail from "../components/topics/TopicDetail.vue";
+import AllTopics from "../page/AllTopics.vue";
+import TaskDetail from "../components/topics/tasks/TaskDetail.vue";
+import NotFound from "../page/NotFound.vue";
+import Login from "../page/Login.vue";
+
+function isAuthenticated() {
+  const token = localStorage.getItem("token");
+  return !!token;
+}
 
 const router = createRouter({
   history: createWebHistory("/daily-task-project"),
   routes: [
-    { path: "/", component: Home },
-    // {
-    //   path: "/topics/1",
-    //   // path: "/daily-task-project/topics/1",
-    //   component: Topics,
-    //   props: true,
-    //   children: [
-    //     { path: "topic1", component: Topic1 },
-    //     { path: "topic2", component: Topic2 },
-    //     { path: "topic3", component: Topic3 },
-    //     { path: "topic4", component: Topic4 },
-    //     { path: "topic5", component: Topic5 },
-    //     { path: "topic6", component: Topic6 },
-    //     { path: "topic7", component: Topic7 },
-    //   ],
-    // },
-
+    { path: "/login", component: Login, name: "login" },
+    { path: "/", component: Home, name: "home" },
     {
       path: "/topics/1",
-      component: TopicTest,
-      children: [{ path: ":topicId", component: TopicDetail }],
+      component: AllTopics,
+      name: "topics",
+      // children: [{ path: ":topicId", component: TaskDetail }],
     },
+    { path: "/topics/1/:topicId", component: TaskDetail, name: "task" },
+    { path: "/:notFound(.*)", component: NotFound, name: "notFound" },
   ],
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.name !== "login" && !isAuthenticated()) next({ name: "login" });
+  else next();
 });
 
 export default router;

@@ -39,7 +39,26 @@ const props = defineProps({
   @apply inline-block;
 }
 
-.my-basic-style {
-  @apply px-2 py-1 bg-blue-600 text-blue-50 rounded-sm;
+/* .my-base-button-inline-block {
+  @apply inline-block;
+} */
+.my-basic-style-black {
+  @apply px-2 py-2  block w-full rounded-full  font-bold bg-slate-900 text-slate-50 transition-all duration-300;
+}
+
+.my-basic-style-blue {
+  @apply px-2 py-1   font-bold bg-blue-700 text-blue-50 transition-all duration-300 rounded-sm;
+}
+
+.my-basic-style-red {
+  @apply px-2 py-1   font-bold bg-red-700 text-red-50 transition-all duration-300 rounded-sm;
+}
+
+.my-basic-style-edit {
+  @apply px-2 py-1 text-slate-700 border border-slate-200 font-bold hover:bg-blue-600 hover:text-blue-50 transition-all duration-300 rounded-sm;
+}
+
+.my-basic-style-remove {
+  @apply px-2 py-1 text-slate-700 border border-slate-200 font-bold hover:bg-red-600 hover:text-red-50 transition-all duration-300 rounded-sm;
 }
 </style>

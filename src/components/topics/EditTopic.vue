@@ -1,6 +1,18 @@
 <script setup>
-import { ref } from "vue";
+import { toRefs } from "vue";
 import useValidateTopic from "../hooks/validateTopic";
+
+// Prop
+const props = defineProps({
+  topicId: {
+    type: String,
+    required: true,
+  },
+});
+
+const { topicId: propTopicId } = toRefs(props);
+
+console.log(propTopicId.value);
 
 // Form section
 const { emojis, title, emoji, isForm, validationForm, error, clearInvalid } =
@@ -11,24 +23,25 @@ function clear() {
   location.reload();
 }
 
-// fetch post topic
-async function registerTopic() {
-  try {
-    validationForm();
-    if (!isForm.value) {
-      return;
-    }
+// Fetch put
+async function editData() {
+  validationForm();
+  if (!isForm.value) {
+    return;
+  }
 
+  try {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
     const urlencoded = new URLSearchParams();
+    urlencoded.append("topic_id", `${propTopicId.value}`);
     urlencoded.append("title", title.value.val);
     urlencoded.append("emoji", emoji.value.val);
     urlencoded.append("include", "true");
 
     const requestOptions = {
-      method: "POST",
+      method: "PUT",
       headers: myHeaders,
       body: urlencoded,
       redirect: "follow",
@@ -37,47 +50,16 @@ async function registerTopic() {
     const urlMain = `https://emerging-hawk-entirely.ngrok-free.app
 `;
     let url = `${urlMain}/topic`;
-    const response = await fetch(url, requestOptions);
 
+    const response = await fetch(url, requestOptions);
     const responseData = await response.json();
 
     if (!response.ok) {
-      throw new Error(responseData.error.message || "fail to fetch");
+      throw new Error("fali to delete");
     }
 
-    console.log(responseData);
     // clear after fetch
     clear();
-
-    // const newTopic = {
-
-    //   // id: ` ${topics.value.length + 1}`,
-    //   emoji: emoji.value.val,
-    //   datail: title.value.val,
-    //   editStatus: false,
-    //   tasks: ref([]),
-    //   // tasks: ref([
-    //   //   {
-    //   //     id: "1",
-    //   //     emoji: "✌️",
-    //   //     title: "[Memoji]",
-    //   //     detail: "- Create Prototype Mobile for Get Notification in Principle",
-    //   //     month: "Mar",
-    //   //     date: "26",
-    //   //     status: "InProgress",
-    //   //   },
-    //   //   {
-    //   //     id: "2",
-    //   //     emoji: "✌️",
-    //   //     title: "[Lux]",
-    //   //     detail: "- Design Lux Pet Shop Product Page Responsive Website",
-    //   //     month: "Mar",
-    //   //     date: "29",
-    //   //     status: "NextUp",
-    //   //   },
-    //   // ]),
-    // };
-    // topics.value.push(newTopic);
   } catch (err) {
     error.value = err.message || "Something went wrong";
   }
@@ -85,9 +67,9 @@ async function registerTopic() {
 </script>
 
 <template>
-  <form @submit.prevent="registerTopic">
+  <form @submit.prevent="editData">
     <div class="my-form-container">
-      <label for="title" class="my-label">Title</label>
+      <label for="title" class="my-label">Change"Title" to... </label>
       <input
         type="text"
         id="title"
@@ -100,7 +82,7 @@ async function registerTopic() {
     </div>
 
     <div class="my-form-container">
-      <label for="emoji" class="my-label">Emoji</label>
+      <label for="emoji" class="my-label">Change "Emoji" to...</label>
       <select
         name="emoji"
         id="emoji"
@@ -117,8 +99,7 @@ async function registerTopic() {
     </div>
 
     <p class="invalid-p" v-if="error">{{ error }}</p>
-
-    <base-button mode="my-basic-style-black" class="mt-6">Submit</base-button>
+    <base-button mode="my-basic-style-black" class="mt-6">Confirm</base-button>
   </form>
 </template>
 
