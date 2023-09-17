@@ -87,6 +87,11 @@ function openPrevSection() {
   }
 }
 
+// clear input after fetch
+function clear() {
+  location.reload();
+}
+
 // Fetch put
 async function editTask() {
   try {
@@ -130,6 +135,8 @@ async function editTask() {
     if (!response.ok) {
       throw new Error("fali to delete");
     }
+    // Clear input after fetch
+    clear();
   } catch (err) {
     console.log(err);
   }

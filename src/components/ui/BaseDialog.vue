@@ -40,7 +40,7 @@ function tryClose() {
 
 <template>
   <teleport to="body">
-    <div class="my-backdrop" v-if="show" @click="tryClose"></div>
+    <div class="my-backdrop z-40" v-if="show" @click="tryClose"></div>
 
     <Transition name="popup">
       <dialog open :class="mode2" v-if="show">
@@ -70,15 +70,15 @@ function tryClose() {
 
 <style scoped>
 .my-backdrop {
-  @apply fixed top-0 left-0 bg-slate-800 h-full w-full bg-opacity-40 z-20;
+  @apply fixed top-0 left-0 bg-slate-800 h-full w-full bg-opacity-40 z-40;
 }
 
 .my-dialog {
-  @apply fixed w-96 max-h-96  top-1/3  z-50  rounded-md shadow-sm;
+  @apply fixed w-96 max-h-96  top-1/3  z-40  rounded-md shadow-sm;
 }
 
 .my-edit-dialog {
-  @apply text-xs w-96 max-h-96  text-slate-800 fixed top-1/3  flex flex-col gap-1 z-50 rounded-md shadow-sm;
+  @apply text-xs w-96 max-h-96  text-slate-800 fixed top-1/3  flex flex-col gap-1 z-40 rounded-md shadow-sm;
 }
 
 .my-header-dialog {

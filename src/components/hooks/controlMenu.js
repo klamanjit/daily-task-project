@@ -98,6 +98,9 @@ export default function useControlMenu() {
     item.editStatus = false;
   }
 
+  // Popupmenu for sm responsive
+  const isPopupMenu = ref(false);
+
   return {
     isAddItem,
     changeAddItemToTrue,
@@ -107,5 +110,6 @@ export default function useControlMenu() {
     isRemoveItem,
     openRemoveItem,
     closeMenu,
+    isPopupMenu,
   };
 }

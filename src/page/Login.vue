@@ -109,7 +109,7 @@ async function authorization() {
     v-if="true"
   >
     <base-card
-      class="absolute inset-1/2 -translate-x-1/2 -translate-y-1/2 min-h-fit w-1/3"
+      class="absolute inset-1/2 -translate-x-1/2 -translate-y-1/2 min-h-fit sm:w-1/2 lg:w-1/3 2xl:w-1/4"
     >
       <!-- 1st colunm -->
       <form

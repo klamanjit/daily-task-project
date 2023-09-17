@@ -40,37 +40,45 @@ const topicSelected = computed(() => {
   );
   console.log(selectedTopic);
 
-  return selectedTopic;
+  return selectedTopic || {};
 });
 
-console.log(topics.value[1]);
-console.log(topics.value);
-console.log(route.params.topicId);
-console.log(topicSelected.value);
+// console.log(topics.value[1]);
+// console.log(topics.value);
+// console.log(route.params.topicId);
+// console.log(topicSelected.value);
 
 const topicHeader = computed(() => {
-  return topicSelected.value.emoji + " " + topicSelected.value.datail;
+  return (
+    (topicSelected.value.emoji || "") +
+    "  " +
+    (topicSelected.value.datail || "")
+  );
 });
 
 // Task section
 const topicTasks = computed(() => {
-  return topicSelected.value.tasks;
+  return (topicSelected.value && topicSelected.value.tasks) || [];
 });
 
 console.log(topicTasks.value);
 
 const nextUpTask = computed(() => {
-  return topicSelected.value.tasks.filter((task) => task.status === "NextUp");
+  return (topicSelected.value.tasks || []).filter(
+    (task) => task.status === "NextUp"
+  );
 });
 
 const inProgressTask = computed(() => {
-  return topicSelected.value.tasks.filter(
+  return (topicSelected.value.tasks || []).filter(
     (task) => task.status === "InProgress"
   );
 });
 
 const completeTask = computed(() => {
-  return topicSelected.value.tasks.filter((task) => task.status === "Complete");
+  return (topicSelected.value.tasks || []).filter(
+    (task) => task.status === "Complete"
+  );
 });
 
 // Show task edit menu
@@ -124,156 +132,170 @@ onMounted(async () => {
 </script>
 
 <template>
-  <base-spinner v-if="isLoading"></base-spinner>
-  <section class="py-10 px-20 ml-60 text-slate-800" v-if="!isLoading">
-    <div class="flex justify-between items-center">
-      <h1 class="mb-8 md:text-4xl 2xl:text-5xl font-bold">
-        {{ topicHeader }}
-      </h1>
-
-      <the-top-header @search="searchTask"></the-top-header>
-    </div>
-
-    <div class="flex items-center gap-2">
-      <button class="my-reload-btn" @click="changeAddItemToTrue">
-        <PlusIcon class="h-5 w-5 inline-block"></PlusIcon>
-
-        <p class="border-l px-2">New Task</p>
-      </button>
-
+  <div class="2xl:container 2xl:mx-auto">
+    <base-spinner v-if="isLoading"></base-spinner>
+    <section
+      class="py-10 px-20 sm:mt-20 lg:mt-0 lg:ml-72 text-slate-800"
+      v-if="!isLoading"
+    >
       <div
-        class="w-10 shadow-sm text-center p-1 rounded-md bg-gradient-to-tr from-blue-500 to-indigo-500"
+        class="sm:z-40 sm:flex sm:justify-between sm:items-center lg:items-center sm:fixed sm:bottom-0 sm:left-0 sm:w-screen sm:h-20 sm:bg-slate-400 sm:p-2 lg:static lg:flex lg:justify-between lg:w-full lg:bg-white lg:mb-20"
       >
-        <button class="self-center" @click="getTasks">
+        <h1 class="sm:text-xl lg:text-4xl 2xl:text-5xl font-bold text-center">
+          {{ topicHeader }}
+        </h1>
+
+        <the-top-header @search="searchTask"></the-top-header>
+      </div>
+
+      <div class="flex items-center gap-2 sm:mb-6">
+        <button class="my-reload-btn" @click="changeAddItemToTrue">
+          <PlusIcon
+            class="sm:h-6 sm:w-6 lg:h-5 lg:w-5 2xl:h-6 2xl:w-6 inline-block"
+          ></PlusIcon>
+
+          <p class="border-l px-2 lg:text-base 2xl:text-xl">New Task</p>
+        </button>
+
+        <button
+          class="w-10 h-10 shadow-sm text-center p-1 rounded-md bg-gradient-to-tr from-blue-500 to-indigo-500 flex items-center justify-center"
+          @click="getTasks"
+        >
           <ArrowPathRoundedSquareIcon
-            class="h-4 w-4 fill-blue-50"
+            class="sm:h-6 sm:w-6 lg:h-4 lg:w-4 2xl:h-5 2xl:w-5 fill-blue-50"
           ></ArrowPathRoundedSquareIcon>
         </button>
       </div>
-    </div>
+      <header
+        class="grid grid-cols-3 sm:gap-2 sm:mb-6 lg:gap-4 xl:gap-6 lg:p-6 2xl:p-8"
+      >
+        <div class="my-grid-topic">
+          <p>Next up</p>
+          <p class="my-grid-p">{{ nextUpTask.length }}</p>
+        </div>
+        <div class="my-grid-topic">
+          <p>In Progress</p>
+          <p class="my-grid-p">{{ inProgressTask.length }}</p>
+        </div>
+        <div class="my-grid-topic">
+          <p>Complete</p>
+          <p class="my-grid-p">{{ completeTask.length }}</p>
+        </div>
+      </header>
 
-    <main class="my-card-container xl:p-6 2xl:p-8">
-      <div class="my-grid-topic">
-        <p>Next up</p>
-        <p class="my-grid-p">{{ nextUpTask.length }}</p>
-      </div>
-      <div class="my-grid-topic">
-        <p>In Progress</p>
-        <p class="my-grid-p">{{ inProgressTask.length }}</p>
-      </div>
-      <div class="my-grid-topic">
-        <p>Complete</p>
-        <p class="my-grid-p">{{ completeTask.length }}</p>
-      </div>
+      <main class="my-card-container lg:p-6 2xl:p-8">
+        <div v-for="task in topicTasks" :key="task.id">
+          <div
+            class="blackdrop"
+            v-if="task.editStatus"
+            @click="task.editStatus = false"
+          ></div>
+          <base-card class="my-base-card-task relative" draggable="true">
+            <nav class="flex justify-between items-center mb-1">
+              <p
+                class="bg-slate-500 bg-opacity-10 rounded-full text-base text-center h-5 w-5"
+              >
+                {{ task.emoji }}
+              </p>
 
-      <div v-for="task in topicTasks" :key="task.id">
-        <div
-          class="blackdrop"
-          v-if="task.editStatus"
-          @click="task.editStatus = false"
-        ></div>
-        <base-card class="my-base-card-task relative" draggable="true">
-          <nav class="flex justify-between items-center mb-1">
-            <p
-              class="bg-slate-500 bg-opacity-10 rounded-full text-base text-center h-5 w-5"
-            >
-              {{ task.emoji }}
+              <!-- edite menu button -->
+              <div>
+                <base-button
+                  class="h-5 w-5 fill-slate-500 opacity-70"
+                  @click="toggleEditMenu(task)"
+                >
+                  <EllipsisHorizontalIcon></EllipsisHorizontalIcon>
+                </base-button>
+
+                <base-dialog
+                  :show="task.editStatus"
+                  @close="closeMenu(task)"
+                  mode2="my-edit-dialog"
+                  title="Adjust task"
+                >
+                  <div class="flex mb-2">
+                    <base-button
+                      class="text-xs flex justify-center items-center gap-2"
+                      mode="my-basic-style-edit"
+                      @click="openEditItem(task)"
+                    >
+                      <PencilSquareIcon class="h-4 w-4"></PencilSquareIcon>
+                      Edit
+                    </base-button>
+                    <base-button
+                      class="text-xs flex justify-center items-center gap-2"
+                      mode="my-basic-style-remove"
+                      @click="openRemoveItem(task)"
+                    >
+                      <TrashIcon class="h-4 w-4"></TrashIcon>
+                      Remove
+                    </base-button>
+                  </div>
+
+                  <!-- import component -->
+
+                  <EditTask v-if="isEditItem" :task-id="task.id"> </EditTask>
+
+                  <RemoveTask
+                    v-if="isRemoveItem"
+                    :task-id="task.id"
+                  ></RemoveTask>
+                </base-dialog>
+              </div>
+            </nav>
+
+            <p class="mb-1">
+              <span class="font-semibold">{{ task.title }}</span
+              >{{ task.detail }}
             </p>
 
-            <!-- edite menu button -->
-            <div>
-              <base-button
-                class="h-5 w-5 fill-slate-500 opacity-70"
-                @click="toggleEditMenu(task)"
+            <footer class="flex justify-between items-center">
+              <div
+                class="flex gap-1 items-center p-1 rounded-sm"
+                :class="{
+                  myInProgress: task.status === 'InProgress',
+                  myNextUp: task.status === 'NextUp',
+                  myComplete: task.status === 'Complete',
+                  myUnknown: task.status === 'Unknown',
+                }"
               >
-                <EllipsisHorizontalIcon></EllipsisHorizontalIcon>
-              </base-button>
+                <ClockIcon class="h-4 w-4"></ClockIcon>
+                <div class="font-semibold">{{ task.month }}</div>
+                <div class="font-semibold">{{ task.date }}</div>
+              </div>
+              <div class="flex">
+                <img
+                  v-for="user in users"
+                  :key="user.id"
+                  :src="user.imgUrl"
+                  alt="profile-picture"
+                  class="h-6 w-6 rounded-full object-cover -ml-1"
+                />
+              </div>
+            </footer>
+          </base-card>
+        </div>
 
-              <base-dialog
-                :show="task.editStatus"
-                @close="closeMenu(task)"
-                mode2="my-edit-dialog"
-                title="Adjust task"
-              >
-                <div class="flex mb-2">
-                  <base-button
-                    class="text-xs flex justify-center items-center gap-2"
-                    mode="my-basic-style-edit"
-                    @click="openEditItem(task)"
-                  >
-                    <PencilSquareIcon class="h-4 w-4"></PencilSquareIcon>
-                    Edit
-                  </base-button>
-                  <base-button
-                    class="text-xs flex justify-center items-center gap-2"
-                    mode="my-basic-style-remove"
-                    @click="openRemoveItem(task)"
-                  >
-                    <TrashIcon class="h-4 w-4"></TrashIcon>
-                    Remove
-                  </base-button>
-                </div>
+        <base-button
+          class="w-full h-44 border border-d-slate-100 self-center"
+          @click="changeAddItemToTrue"
+        >
+          <PlusCircleIcon class="h-7 w-7 inline-block mr-2"></PlusCircleIcon>
+          <span class="text-sm">Add </span>
+        </base-button>
+      </main>
 
-                <!-- import component -->
+      <the-header></the-header>
 
-                <EditTask v-if="isEditItem" :task-id="task.id"> </EditTask>
-
-                <RemoveTask v-if="isRemoveItem" :task-id="task.id"></RemoveTask>
-              </base-dialog>
-            </div>
-          </nav>
-
-          <p class="mb-1">
-            <span>{{ task.title }}</span
-            >{{ task.detail }}
-          </p>
-
-          <footer class="flex justify-between items-center">
-            <div
-              class="flex gap-1 items-center p-1 rounded-sm"
-              :class="{
-                myInProgress: task.status === 'InProgress',
-                myNextUp: task.status === 'NextUp',
-                myComplete: task.status === 'Complete',
-                myUnknown: task.status === 'Unknown',
-              }"
-            >
-              <ClockIcon class="h-4 w-4"></ClockIcon>
-              <div>{{ task.month }}</div>
-              <div>{{ task.date }}</div>
-            </div>
-            <div class="flex">
-              <img
-                v-for="user in users"
-                :key="user.id"
-                :src="user.imgUrl"
-                alt="profile-picture"
-                class="h-6 w-6 rounded-full object-cover -ml-1"
-              />
-            </div>
-          </footer>
-        </base-card>
-      </div>
-
-      <base-button
-        class="w-full h-44 border border-d-slate-100 self-center"
-        @click="changeAddItemToTrue"
+      <base-dialog
+        :show="isAddItem"
+        @close="changeAddItemToFalse"
+        title="Add new task"
       >
-        <PlusCircleIcon class="h-7 w-7 inline-block mr-2"></PlusCircleIcon>
-        <span class="text-sm">Add </span>
-      </base-button>
-    </main>
-
-    <the-header></the-header>
-
-    <base-dialog
-      :show="isAddItem"
-      @close="changeAddItemToFalse"
-      title="Add new task"
-    >
-      <RegisterTask></RegisterTask>
-    </base-dialog>
-  </section>
+        <RegisterTask></RegisterTask>
+      </base-dialog>
+    </section>
+  </div>
 </template>
 
 <style scoped>
@@ -326,11 +348,10 @@ onMounted(async () => {
 }
 
 .my-card-container {
-  @apply sm:grid sm:grid-cols-3 sm:gap-4
-  md:gap-4
-  lg:gap-6
-  xl:gap-6
-  2xl:gap-8;
+  @apply gap-6
+  sm:flex sm:flex-col 
+  lg:grid lg:grid-cols-2
+  xl:grid xl:grid-cols-3;
 }
 
 .blackdrop {
@@ -346,7 +367,7 @@ onMounted(async () => {
 }
 
 .my-reload-btn {
-  @apply flex gap-2 justify-center items-center text-blue-50 font-semibold px-2 py-1  bg-gradient-to-tr from-blue-500 to-indigo-500  h-8 rounded-md shadow-sm;
+  @apply flex gap-2 justify-center items-center text-blue-50 font-semibold p-2  bg-gradient-to-tr from-blue-500 to-indigo-500  h-10 rounded-md shadow-sm;
 }
 
 /* Trasition */

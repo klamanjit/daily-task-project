@@ -20,11 +20,13 @@ const topicSelected = computed(() => {
   const selectedTopic = topics.value.find(
     (topic) => topic.id === route.params.topicId
   );
-  return selectedTopic;
+  return selectedTopic || {};
 });
 
 const nextUpTask = computed(() => {
-  return topicSelected.value.tasks.filter((task) => task.status === "NextUp");
+  return (topicSelected.value.tasks || []).filter(
+    (task) => task.status === "NextUp"
+  );
 });
 
 const nextUpTaskLength = computed(() => {
@@ -52,84 +54,87 @@ const { logout } = useValidateLogin();
 </script>
 
 <template>
-  <section>
-    <ul class="flex gap-3 text-slate-900 relative">
-      <Transition name="slide">
-        <div v-if="isSeearchBtn" class="absolute top-0 -left-44">
-          <form @submit.prevent="trySearch">
-            <input
-              type="text"
-              id="title"
-              v-model="title.val"
-              placeholder="Search for title"
-              class="block w-full h-10 border-none bg-slate-200 mb-2 p-2 rounded-md focus:outline-none focus:bg-blue-50 text-sm"
-            />
-          </form>
-        </div>
-      </Transition>
+  <ul
+    class="sm:flex sm:items-center lg:justify-center sm:gap-3 text-slate-900 relative lg:h-full lg:bg-white"
+  >
+    <Transition name="slide">
+      <div
+        v-if="isSeearchBtn"
+        class="absolute sm:top-0 lg:top-3 2xl:top-3 -left-44"
+      >
+        <form @submit.prevent="trySearch">
+          <input
+            type="text"
+            id="title"
+            v-model="title.val"
+            placeholder="Search for title"
+            class="block w-full h-10 border-none bg-slate-200 mb-2 p-2 rounded-md focus:outline-none focus:bg-blue-50 text-sm"
+          />
+        </form>
+      </div>
+    </Transition>
 
-      <base-button @click="isSeearchBtn = !isSeearchBtn">
-        <li>
-          <MagnifyingGlassIcon
-            class="h-10 w-10 bg-slate-900 p-2 bg-opacity-10 text-slate-900 rounded-full"
-          ></MagnifyingGlassIcon>
-        </li>
+    <base-button @click="isSeearchBtn = !isSeearchBtn">
+      <li>
+        <MagnifyingGlassIcon
+          class="sm:h-10 sm:w-10 lg:h-10 lg:w-10 2xl:h-14 2xl:w-14 bg-slate-900 p-2 bg-opacity-10 text-slate-900 rounded-full"
+        ></MagnifyingGlassIcon>
+      </li>
+    </base-button>
+
+    <li class="relative">
+      <span
+        class="absolute -top-2 -right-1 bg-red-600 text-red-50 rounded-full w-5 h-5 py-0.5 text-xs text-center"
+        >{{ nextUpTask.length }}</span
+      >
+      <base-button @click="isBellBtn = !isBellBtn">
+        <BellIcon class="my-bell-icon"></BellIcon>
       </base-button>
-
-      <li class="relative">
-        <span
-          class="absolute -top-2 -right-1 bg-red-600 text-red-50 rounded-full w-5 h-5 py-0.5 text-xs text-center"
-          >{{ nextUpTask.length }}</span
+      <Transition name="popup">
+        <base-card
+          v-if="isBellBtn"
+          class="absolute sm:-top-16 lg:top-10 2xl:top-14 left-2 flex flex-col gap-1 text-xs"
         >
-        <base-button @click="isBellBtn = !isBellBtn">
-          <BellIcon class="my-bell-icon"></BellIcon>
-        </base-button>
+          <p
+            v-for="next in nextUpTask"
+            :key="next"
+            class="border border-s-slate-200 font-bold p-1 bg-green-500 text-green-50 text-center"
+          >
+            {{ next.title }}
+          </p>
+        </base-card>
+      </Transition>
+    </li>
+
+    <base-button @click="isUserBtn = !isUserBtn">
+      <li class="relative">
+        <img
+          src="../../assets/header/1.jpg"
+          alt="cat-profile"
+          class="sm:h-10 sm:w-10 lg:h-10 lg:w-10 2xl:h-14 2xl:w-14 rounded-full object-cover"
+        />
+
         <Transition name="popup">
           <base-card
-            v-if="isBellBtn"
-            class="absolute top-10 left-2 flex flex-col gap-1 text-xs"
+            v-if="isUserBtn"
+            class="absolute w-20 sm:hidden lg:block lg:top-10 2xl:top-14 left-2 flex flex-col gap-1 text-xs"
           >
-            <p
-              v-for="next in nextUpTask"
-              :key="next"
-              class="border border-s-slate-200 font-bold p-1 bg-green-500 text-green-50 text-center"
+            <base-button
+              class="border border-s-slate-200 p-1 text-slate-700 font-bold hover:bg-blue-500 hover:text-blue-50 transition-all duration-200 ease-in"
+              @click="logout"
             >
-              {{ next.title }}
-            </p>
+              Log-out
+            </base-button>
           </base-card>
         </Transition>
       </li>
-
-      <base-button @click="isUserBtn = !isUserBtn">
-        <li class="relative">
-          <img
-            src="../../assets/header/1.jpg"
-            alt="cat-profile"
-            class="h-10 w-10 rounded-full object-cover"
-          />
-
-          <Transition name="popup">
-            <base-card
-              v-if="isUserBtn"
-              class="absolute w-20 top-10 left-2 flex flex-col gap-1 text-xs"
-            >
-              <base-button
-                class="border border-s-slate-200 p-1 text-slate-700 font-bold hover:bg-blue-500 hover:text-blue-50 transition-all duration-200 ease-in"
-                @click="logout"
-              >
-                Log-out
-              </base-button>
-            </base-card>
-          </Transition>
-        </li>
-      </base-button>
-    </ul>
-  </section>
+    </base-button>
+  </ul>
 </template>
 
 <style scoped>
 .my-bell-icon {
-  @apply h-10 w-10 bg-slate-900 p-2 bg-opacity-10 text-slate-900 rounded-full;
+  @apply sm:h-10 sm:w-10 lg:h-10 lg:w-10 2xl:h-14 2xl:w-14 bg-slate-900 p-2 bg-opacity-10 text-slate-900 rounded-full;
 }
 
 /* Trasition */
