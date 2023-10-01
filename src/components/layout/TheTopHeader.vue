@@ -5,6 +5,8 @@ import { computed, inject, ref } from "vue";
 import { useRoute } from "vue-router";
 import useValidateLogin from "../hooks/validateLogin";
 
+import { PhUser } from "@phosphor-icons/vue";
+
 const route = useRoute();
 
 // emit function
@@ -55,12 +57,12 @@ const { logout } = useValidateLogin();
 
 <template>
   <ul
-    class="sm:flex sm:items-center lg:justify-center sm:gap-3 text-slate-900 relative lg:h-full lg:bg-white"
+    class="phone:flex phone:items-center lg:justify-center phone:gap-3 text-slate-900 relative lg:h-full lg:bg-white"
   >
     <Transition name="slide">
       <div
         v-if="isSeearchBtn"
-        class="absolute sm:top-0 lg:top-3 2xl:top-3 -left-44"
+        class="absolute phone:top-0 lg:top-3 2xl:top-3 -left-44"
       >
         <form @submit.prevent="trySearch">
           <input
@@ -77,7 +79,7 @@ const { logout } = useValidateLogin();
     <base-button @click="isSeearchBtn = !isSeearchBtn">
       <li>
         <MagnifyingGlassIcon
-          class="sm:h-10 sm:w-10 lg:h-10 lg:w-10 2xl:h-14 2xl:w-14 bg-slate-900 p-2 bg-opacity-10 text-slate-900 rounded-full"
+          class="phone:h-8 phone:w-8 sm:h-10 sm:w-10 lg:h-10 lg:w-10 2xl:h-14 2xl:w-14 bg-slate-900 p-2 bg-opacity-10 text-slate-900 rounded-full"
         ></MagnifyingGlassIcon>
       </li>
     </base-button>
@@ -93,7 +95,7 @@ const { logout } = useValidateLogin();
       <Transition name="popup">
         <base-card
           v-if="isBellBtn"
-          class="absolute sm:-top-16 lg:top-10 2xl:top-14 left-2 flex flex-col gap-1 text-xs"
+          class="absolute phone:-top-16 sm:-top-16 lg:top-10 2xl:top-14 left-2 flex flex-col gap-1 text-xs"
         >
           <p
             v-for="next in nextUpTask"
@@ -108,16 +110,17 @@ const { logout } = useValidateLogin();
 
     <base-button @click="isUserBtn = !isUserBtn">
       <li class="relative">
-        <img
+        <PhUser class="my-bell-icon"></PhUser>
+        <!-- <img
           src="../../assets/header/1.jpg"
           alt="cat-profile"
           class="sm:h-10 sm:w-10 lg:h-10 lg:w-10 2xl:h-14 2xl:w-14 rounded-full object-cover"
-        />
+        /> -->
 
         <Transition name="popup">
           <base-card
             v-if="isUserBtn"
-            class="absolute w-20 sm:hidden lg:block lg:top-10 2xl:top-14 left-2 flex flex-col gap-1 text-xs"
+            class="absolute w-20 phone:hidden lg:block lg:top-10 2xl:top-14 left-2 flex flex-col gap-1 text-xs"
           >
             <base-button
               class="border border-s-slate-200 p-1 text-slate-700 font-bold hover:bg-blue-500 hover:text-blue-50 transition-all duration-200 ease-in"
@@ -134,7 +137,7 @@ const { logout } = useValidateLogin();
 
 <style scoped>
 .my-bell-icon {
-  @apply sm:h-10 sm:w-10 lg:h-10 lg:w-10 2xl:h-14 2xl:w-14 bg-slate-900 p-2 bg-opacity-10 text-slate-900 rounded-full;
+  @apply phone:h-8 phone:w-8 sm:h-10 sm:w-10 lg:h-10 lg:w-10 2xl:h-14 2xl:w-14 bg-slate-900 p-2 bg-opacity-10 text-slate-900 rounded-full;
 }
 
 /* Trasition */

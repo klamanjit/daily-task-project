@@ -1,11 +1,13 @@
 <script setup>
-import { PhDotsThreeCircleVertical } from "@phosphor-icons/vue";
+import {
+  PhDotsThreeCircleVertical,
+  PhUsersThree,
+  PhCalendarCheck,
+} from "@phosphor-icons/vue";
 
 import {
-  BeakerIcon,
   ArrowsUpDownIcon,
   RectangleGroupIcon,
-  Cog8ToothIcon,
   PresentationChartLineIcon,
   PlayIcon,
   ArrowRightOnRectangleIcon,
@@ -31,7 +33,7 @@ const { isPopupMenu } = useControlMenu();
 console.log(route.path);
 
 const controlAllTasks = computed(() => {
-  if (route.path === "/") {
+  if (route.path === "/" || route.path === "/users") {
     return false;
   } else {
     return true;
@@ -46,25 +48,27 @@ const { logout } = useValidateLogin();
   <section class="section-the-header">
     <header>
       <base-card mode="my-base-card-for-the-header" class="my-top-card">
-        <BeakerIcon
-          class="bg-blue-600 rounded-full p-1 sm:h-8 sm:w-8 lg:h-6 lg:w-6 2xl:h-8 2xl:w-8"
-        ></BeakerIcon>
-        <p class="text-center font-bold">OWW Studio</p>
+        <PhCalendarCheck
+          class="bg-blue-600 fill-slate-100 rounded-full p-1 phone:h-8 phone:w-8 lg:h-6 lg:w-6 2xl:h-8 2xl:w-8"
+        ></PhCalendarCheck>
+        <p class="phone:block sm:block text-center font-bold">OWW Studio</p>
         <ArrowsUpDownIcon
-          class="fill-blue-600 rounded-full sm:h-4 sm:w-4 lg:h-3 lg:w-3 2xl:h-5 2xl:w-5 ml-2"
+          class="phone:block sm:block fill-blue-600 rounded-full phone:h-4 phone:w-4 lg:h-3 lg:w-3 2xl:h-5 2xl:w-5 ml-2"
         ></ArrowsUpDownIcon>
       </base-card>
-      <ul class="sm:hidden lg:my-10 lg:px-4 lg:flex lg:flex-col lg:gap-6">
+      <ul class="phone:hidden lg:my-10 lg:px-4 lg:flex lg:flex-col lg:gap-6">
         <base-button link to="/">
           <li class="my-list">
             <RectangleGroupIcon class="my-list-icon"></RectangleGroupIcon>
             <p>Dashboard</p>
           </li>
         </base-button>
-        <li class="my-list">
-          <Cog8ToothIcon class="my-list-icon"></Cog8ToothIcon>
-          <p>Setting</p>
-        </li>
+        <base-button link to="/users">
+          <li class="my-list">
+            <PhUsersThree class="my-list-icon"></PhUsersThree>
+            <p>All user</p>
+          </li>
+        </base-button>
 
         <base-button link to="/topics/1">
           <li class="my-list">
@@ -77,7 +81,7 @@ const { logout } = useValidateLogin();
       </ul>
 
       <section v-if="controlAllTasks">
-        <ul class="sm:hidden px-4 lg:flex lg:flex-col gap-3">
+        <ul class="phone:hidden px-4 lg:flex lg:flex-col gap-3">
           <base-button
             class="mb-2"
             v-for="topic in topics"
@@ -101,7 +105,7 @@ const { logout } = useValidateLogin();
     </header>
 
     <PhDotsThreeCircleVertical
-      class="text-slate-400 sm:h-8 sm:w-8 lg:h-10 lg:w-10 2xl:h-12 2xl:w-12 sm:block lg:hidden"
+      class="text-slate-400 phone:h-8 phone:w-8 lg:h-10 lg:w-10 2xl:h-12 2xl:w-12 phone:block lg:hidden"
       @click="isPopupMenu = true"
     ></PhDotsThreeCircleVertical>
 
@@ -113,20 +117,24 @@ const { logout } = useValidateLogin();
         @click="isPopupMenu = false"
       ></div>
       <div
-        class="sm:fixed sm:top-1/2 sm:left-1/2 -translate-x-1/2 -translate-y-1/2"
+        class="phone:fixed phone:top-1/2 phone:left-1/2 -translate-x-1/2 -translate-y-1/2"
         v-if="isPopupMenu"
       >
-        <ul class="sm:my-10 sm:px-4 sm:flex sm:flex-col sm:gap-6 lg:hidden">
+        <ul
+          class="phone:my-10 phone:px-4 phone:flex phone:flex-col phone:gap-6 lg:hidden"
+        >
           <base-button link to="/">
             <li class="my-list">
               <RectangleGroupIcon class="my-list-icon"></RectangleGroupIcon>
               <p>Dashboard</p>
             </li>
           </base-button>
-          <li class="my-list">
-            <Cog8ToothIcon class="my-list-icon"></Cog8ToothIcon>
-            <p>Setting</p>
-          </li>
+          <base-button link to="/users">
+            <li class="my-list">
+              <PhUsersThree class="my-list-icon"></PhUsersThree>
+              <p>All users</p>
+            </li>
+          </base-button>
 
           <base-button link to="/topics/1">
             <li class="my-list">
@@ -139,7 +147,9 @@ const { logout } = useValidateLogin();
         </ul>
 
         <section v-if="controlAllTasks">
-          <ul class="sm:px-4 sm:flex sm:flex-col sm:gap-3 lg:hidden">
+          <ul
+            class="phone:px-4 phone:flex phone:flex-col phone:gap-3 lg:hidden"
+          >
             <base-button
               class="mb-2"
               v-for="topic in topics"
@@ -166,9 +176,9 @@ const { logout } = useValidateLogin();
     <footer>
       <button class="flex my-list" @click="logout">
         <ArrowRightOnRectangleIcon
-          class="text-slate-400 sm:h-8 sm:w-8 lg:h-10 lg:w-10 2xl:h-12 2xl:w-12"
+          class="text-slate-400 phone:h-8 phone:w-8 lg:h-10 lg:w-10 2xl:h-12 2xl:w-12"
         ></ArrowRightOnRectangleIcon>
-        <p class="sm:hidden lg:block">Log out</p>
+        <p class="phone:hidden lg:block">Log out</p>
       </button>
     </footer>
   </section>
@@ -177,19 +187,19 @@ const { logout } = useValidateLogin();
 <style scoped>
 .section-the-header {
   @apply bg-slate-900 bg-opacity-10 text-slate-900
-  sm:fixed sm:top-0 sm:left-0 sm:w-full sm:min-h-fit  sm:flex sm:justify-between  sm:items-center sm:p-2 sm:z-40
+  phone:fixed phone:top-0 phone:left-0 phone:w-full phone:min-h-fit  phone:flex phone:justify-between  phone:items-center phone:p-2 phone:z-40
   lg:fixed lg:top-0 lg:left-0 lg:flex lg:flex-col lg:justify-between lg:min-h-screen lg:h-full lg:w-72 lg:px-6 lg:py-10;
 }
 .my-top-card {
   @apply font-semibold gap-2
-  sm:flex sm:flex-row sm:justify-center sm:items-center sm:text-base
+  phone:flex phone:flex-row phone:justify-center phone:items-center phone:text-base
   /* md: */
   lg:flex-row lg:text-lg 
   2xl:text-2xl;
 }
 .my-list {
   @apply font-semibold
-  sm:text-lg sm:flex sm:flex-col sm:justify-center sm:items-center
+  phone:text-lg phone:flex phone:flex-col phone:justify-center phone:items-center
   /* md:text-sm md:flex md:flex-col md:justify-center md:items-center */
   lg:text-lg lg:flex lg:flex-row gap-3 lg:justify-start lg:items-center text-slate-500 text-opacity-50
   2xl:text-2xl;
@@ -197,6 +207,7 @@ const { logout } = useValidateLogin();
 
 .my-list-icon {
   @apply text-slate-400
+  phone:h-10 phone:w-10
   sm:h-12 sm:w-12
   /* md:h-10 md:w-10 */
   lg:h-10 lg:w-10
@@ -205,7 +216,7 @@ const { logout } = useValidateLogin();
 
 .my-list2 {
   @apply text-slate-400 font-semibold
-  sm:flex  sm:justify-center sm:items-center sm:text-lg 
+  phone:flex  phone:justify-center phone:items-center phone:text-lg 
   lg:flex gap-2 lg:justify-start lg:items-center lg:text-lg 
   2xl:text-xl;
 }
@@ -216,13 +227,13 @@ const { logout } = useValidateLogin();
 
 .my-playIcon {
   @apply fill-slate-500 opacity-70 
-  sm:hidden
+  phone:hidden
   lg:block lg:h-4 lg:w-4
   2xl:h-6 2xl:w-6;
 }
 
 .my-topic-detail {
-  @apply sm:block
+  @apply phone:block
  
   lg:block;
 }

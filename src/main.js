@@ -6,7 +6,7 @@ import router from "./router/router";
 import TheHeader from "./components/layout/TheHeader.vue";
 import TheTopHeader from "./components/layout/TheTopHeader.vue";
 import BaseCard from "./components/ui/BaseCard.vue";
-import BaseButton from "./components/ui/BaseButoon.vue";
+import BaseButton from "./components/ui/BaseButton.vue";
 import BaseDialog from "./components/ui/BaseDialog.vue";
 import BaseSpinner from "./components/ui/BaseSpinner.vue";
 

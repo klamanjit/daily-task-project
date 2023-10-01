@@ -23,6 +23,9 @@ function clear() {
   location.reload();
 }
 
+// user
+const token = localStorage.getItem("token");
+
 // Fetch put
 async function editData() {
   validationForm();
@@ -33,6 +36,7 @@ async function editData() {
   try {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+    myHeaders.append("token", `${token}`);
 
     const urlencoded = new URLSearchParams();
     urlencoded.append("topic_id", `${propTopicId.value}`);
@@ -55,7 +59,7 @@ async function editData() {
     const responseData = await response.json();
 
     if (!response.ok) {
-      throw new Error("fali to delete");
+      throw new Error("fali to edit");
     }
 
     // clear after fetch

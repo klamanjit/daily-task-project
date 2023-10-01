@@ -13,6 +13,16 @@ export default function useValidateTopic() {
     isValid: true,
   });
 
+  const userType = ref({
+    val: "",
+    isValid: true,
+  });
+
+  const numOfUserId = ref({
+    val: "",
+    isValid: true,
+  });
+
   const isForm = ref(true);
 
   function validationForm() {
@@ -36,6 +46,18 @@ export default function useValidateTopic() {
     }
   }
 
+  function validateAddTopicUserForm() {
+    isForm.value = true;
+    if (!userType.value.val) {
+      userType.value.isValid = false;
+      isForm.value = false;
+    }
+    if (!numOfUserId.value.val) {
+      numOfUserId.value.isValid = false;
+      isForm.value = false;
+    }
+  }
+
   // handle error
 
   const error = ref(null);
@@ -48,9 +70,12 @@ export default function useValidateTopic() {
     emojis,
     title,
     emoji,
+    userType,
+    numOfUserId,
     isForm,
     validationForm,
     validationRemoveForm,
+    validateAddTopicUserForm,
     error,
     clearInvalid,
   };

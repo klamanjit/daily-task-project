@@ -28,6 +28,9 @@ function clear() {
   location.reload();
 }
 
+// user
+const token = localStorage.getItem("token");
+
 // Fetch put
 async function editTask() {
   try {
@@ -38,10 +41,11 @@ async function editTask() {
 
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+    myHeaders.append("token", token);
 
     const urlencoded = new URLSearchParams();
     urlencoded.append("task_id", props.taskId);
-    urlencoded.append("title", `[${title.value.val}]`);
+    urlencoded.append("title", `${title.value.val}`);
 
     const requestOptions = {
       method: "DELETE",

@@ -8,6 +8,7 @@ import useControlMenu from "../../hooks/controlMenu";
 import RegisterTask from "./RegisterTask.vue";
 import EditTask from "./EditTask.vue";
 import RemoveTask from "./RemoveTask.vue";
+import AddTaskUser from "./AddTaskUser.vue";
 import {
   useGetTasks,
   useSearchTask,
@@ -24,6 +25,8 @@ import {
   ArrowPathRoundedSquareIcon,
   PlusIcon,
 } from "@heroicons/vue/24/solid";
+
+import { PhUserPlus } from "@phosphor-icons/vue";
 
 const route = useRoute();
 
@@ -42,11 +45,6 @@ const topicSelected = computed(() => {
 
   return selectedTopic || {};
 });
-
-// console.log(topics.value[1]);
-// console.log(topics.value);
-// console.log(route.params.topicId);
-// console.log(topicSelected.value);
 
 const topicHeader = computed(() => {
   return (
@@ -101,6 +99,8 @@ const {
   openEditItem,
   isRemoveItem,
   openRemoveItem,
+  isAddUser,
+  openAddUser,
   closeMenu,
 } = useControlMenu();
 
@@ -135,23 +135,25 @@ onMounted(async () => {
   <div class="2xl:container 2xl:mx-auto">
     <base-spinner v-if="isLoading"></base-spinner>
     <section
-      class="py-10 px-20 sm:mt-20 lg:mt-0 lg:ml-72 text-slate-800"
+      class="py-10 px-20 phone:mt-20 lg:mt-0 lg:ml-72 text-slate-800"
       v-if="!isLoading"
     >
       <div
-        class="sm:z-40 sm:flex sm:justify-between sm:items-center lg:items-center sm:fixed sm:bottom-0 sm:left-0 sm:w-screen sm:h-20 sm:bg-slate-400 sm:p-2 lg:static lg:flex lg:justify-between lg:w-full lg:bg-white lg:mb-20"
+        class="phone:z-40 phone:flex phone:justify-between phone:items-center lg:items-center phone:fixed phone:bottom-0 phone:left-0 phone:w-screen phone:h-20 phone:bg-slate-400 phone:p-2 lg:static lg:flex lg:justify-between lg:w-full lg:bg-white lg:mb-20"
       >
-        <h1 class="sm:text-xl lg:text-4xl 2xl:text-5xl font-bold text-center">
+        <h1
+          class="phone:text-lg sm:text-xl lg:text-4xl 2xl:text-5xl font-bold text-center"
+        >
           {{ topicHeader }}
         </h1>
 
         <the-top-header @search="searchTask"></the-top-header>
       </div>
 
-      <div class="flex items-center gap-2 sm:mb-6">
+      <div class="flex items-center gap-2 phone:mb-6">
         <button class="my-reload-btn" @click="changeAddItemToTrue">
           <PlusIcon
-            class="sm:h-6 sm:w-6 lg:h-5 lg:w-5 2xl:h-6 2xl:w-6 inline-block"
+            class="phone:h-6 phone:w-6 sm:h-6 sm:w-6 lg:h-5 lg:w-5 2xl:h-6 2xl:w-6 inline-block"
           ></PlusIcon>
 
           <p class="border-l px-2 lg:text-base 2xl:text-xl">New Task</p>
@@ -162,12 +164,12 @@ onMounted(async () => {
           @click="getTasks"
         >
           <ArrowPathRoundedSquareIcon
-            class="sm:h-6 sm:w-6 lg:h-4 lg:w-4 2xl:h-5 2xl:w-5 fill-blue-50"
+            class="phone:h-6 phone:w-6 sm:h-6 sm:w-6 lg:h-4 lg:w-4 2xl:h-5 2xl:w-5 fill-blue-50"
           ></ArrowPathRoundedSquareIcon>
         </button>
       </div>
       <header
-        class="grid grid-cols-3 sm:gap-2 sm:mb-6 lg:gap-4 xl:gap-6 lg:p-6 2xl:p-8"
+        class="phone:hidden sm:grid sm:grid-cols-3 phone:gap-2 phone:mb-6 lg:gap-4 xl:gap-6 lg:p-6 2xl:p-8"
       >
         <div class="my-grid-topic">
           <p>Next up</p>
@@ -230,16 +232,28 @@ onMounted(async () => {
                       <TrashIcon class="h-4 w-4"></TrashIcon>
                       Remove
                     </base-button>
+                    <base-button
+                      class="text-xs flex justify-center items-center gap-2"
+                      mode="my-basic-style-addUser"
+                      @click="openAddUser(task)"
+                    >
+                      <PhUserPlus class="h-4 w-4"></PhUserPlus>
+                      Add user
+                    </base-button>
                   </div>
 
                   <!-- import component -->
 
-                  <EditTask v-if="isEditItem" :task-id="task.id"> </EditTask>
+                  <EditTask v-if="isEditItem" :task-id="task.id"></EditTask>
 
                   <RemoveTask
                     v-if="isRemoveItem"
                     :task-id="task.id"
                   ></RemoveTask>
+                  <AddTaskUser
+                    v-if="isAddUser"
+                    :task-id="task.id"
+                  ></AddTaskUser>
                 </base-dialog>
               </div>
             </nav>
@@ -349,7 +363,7 @@ onMounted(async () => {
 
 .my-card-container {
   @apply gap-6
-  sm:flex sm:flex-col 
+  phone:flex phone:flex-col 
   lg:grid lg:grid-cols-2
   xl:grid xl:grid-cols-3;
 }

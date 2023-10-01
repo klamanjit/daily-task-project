@@ -11,6 +11,9 @@ function clear() {
   location.reload();
 }
 
+// user
+const token = localStorage.getItem("token");
+
 // fetch post topic
 async function registerTopic() {
   try {
@@ -21,6 +24,7 @@ async function registerTopic() {
 
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+    myHeaders.append("token", `${token}`);
 
     const urlencoded = new URLSearchParams();
     urlencoded.append("title", title.value.val);

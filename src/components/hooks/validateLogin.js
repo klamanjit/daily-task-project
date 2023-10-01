@@ -1,5 +1,6 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { useLogout } from "./fetchTopicData";
 
 export default function useValidateLogin() {
   const router = useRouter();
@@ -88,8 +89,12 @@ export default function useValidateLogin() {
     lastname.value.val = "";
   }
 
-  function logout() {
+  async function logout() {
+    await useLogout();
     localStorage.removeItem("token");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("username");
+    localStorage.removeItem("userId");
     router.replace("/login");
   }
 

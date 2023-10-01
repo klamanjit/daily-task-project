@@ -31,6 +31,16 @@ export default function useValidateTask() {
     isValid: true,
   });
 
+  const userType = ref({
+    val: "",
+    isValid: true,
+  });
+
+  const numOfUserId = ref({
+    val: "",
+    isValid: true,
+  });
+
   const isForm = ref(true);
 
   const dateSet = computed(() => {
@@ -94,6 +104,18 @@ export default function useValidateTask() {
     }
   }
 
+  function validateAddTaskUserForm() {
+    isForm.value = true;
+    if (!userType.value.val) {
+      userType.value.isValid = false;
+      isForm.value = false;
+    }
+    if (!numOfUserId.value.val) {
+      numOfUserId.value.isValid = false;
+      isForm.value = false;
+    }
+  }
+
   // Handle error
   function clearInvalid(input) {
     input.isValid = true;
@@ -109,8 +131,11 @@ export default function useValidateTask() {
     isForm,
     dateSet,
     monthSet,
+    userType,
+    numOfUserId,
     validationForm,
     validationRemoveForm,
+    validateAddTaskUserForm,
     clearInvalid,
   };
 }

@@ -20,6 +20,9 @@ function clear() {
   location.reload();
 }
 
+// user
+const token = localStorage.getItem("token");
+
 // Fetch delete
 async function deleteData() {
   validationRemoveForm();
@@ -31,6 +34,7 @@ async function deleteData() {
     console.log("valid");
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+    myHeaders.append("token", `${token}`);
 
     const urlencoded = new URLSearchParams();
     urlencoded.append("topic_id", `${props.topicId}`);

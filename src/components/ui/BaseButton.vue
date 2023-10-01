@@ -43,7 +43,7 @@ const props = defineProps({
   @apply inline-block;
 } */
 .my-basic-style-black {
-  @apply px-2 py-2  block w-full rounded-full  font-bold bg-slate-900 text-slate-50 transition-all duration-300;
+  @apply px-2 py-2  block w-full rounded-md  font-bold bg-slate-900 text-slate-50 transition-all duration-300;
 }
 
 .my-basic-style-blue {
@@ -60,5 +60,9 @@ const props = defineProps({
 
 .my-basic-style-remove {
   @apply px-2 py-1 text-slate-700 border border-slate-200 font-bold hover:bg-red-600 hover:text-red-50 transition-all duration-300 rounded-sm;
+}
+
+.my-basic-style-addUser {
+  @apply px-2 py-1 text-slate-700 border border-slate-200 font-bold hover:bg-slate-600 hover:text-red-50 transition-all duration-300 rounded-sm;
 }
 </style>

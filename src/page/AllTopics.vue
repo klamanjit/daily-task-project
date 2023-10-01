@@ -10,6 +10,8 @@ import {
   FlagIcon,
 } from "@heroicons/vue/24/solid";
 
+import { PhUser, PhUserPlus } from "@phosphor-icons/vue";
+
 // general
 import { useRoute } from "vue-router";
 import { computed, inject, onMounted, onBeforeMount, ref } from "vue";
@@ -23,6 +25,7 @@ import {
 import RegisTopic from "../components/topics/RegisTopic.vue";
 import EditTopic from "../components/topics/EditTopic.vue";
 import RemoveTopic from "../components/topics/RemoveTopic.vue";
+import AddTopicUser from "../components/topics/AddTopicUser.vue";
 import useValidateLogin from "../components/hooks/validateLogin";
 
 // Loading
@@ -47,13 +50,6 @@ const userId = computed(() => {
 
 // Topic status
 const topics = inject("topics");
-// const store = inject("store");
-// const selectedUser = computed(() => {
-//   return store.value.find((user) => user.userId === userId.value);
-// });
-// const topics = computed(() => {
-//   return store.value.topics;
-// });
 
 const topicStatus = ref({
   val: "Show All",
@@ -98,6 +94,8 @@ const {
   openEditItem,
   isRemoveItem,
   openRemoveItem,
+  isAddUser,
+  openAddUser,
   closeMenu,
 } = useControlMenu();
 
@@ -131,17 +129,19 @@ onMounted(async () => {
     <base-spinner v-if="isLoading"></base-spinner>
     <section class="my-section-topics" v-if="!isLoading">
       <main
-        class="py-10 px-20 sm:mt-20 lg:mt-0 lg:ml-72 text-slate-800"
+        class="py-10 px-20 phone:mt-20 lg:mt-0 lg:ml-72 text-slate-800"
         v-if="isTopicsPath"
       >
         <div
-          class="sm:fixed sm:inline-flex sm:bottom-0 sm:left-0 sm:w-screen sm:justify-between sm:items-center sm:h-20 sm:bg-slate-400 sm:p-2 lg:static lg:w-full lg:h-full lg:bg-white lg:flex-row lg:mb-20"
+          class="phone:fixed phone:inline-flex phone:bottom-0 phone:left-0 phone:w-screen phone:justify-between phone:items-center phone:h-20 phone:bg-slate-400 phone:p-2 lg:static lg:w-full lg:h-full lg:bg-white lg:flex-row lg:mb-20"
         >
           <div class="gap-4 inline-flex justify-center items-center">
             <PresentationChartLineIcon
-              class="sm:h-6 sm:w-6 lg:h-12 lg:w-12 2xl:h-16 2xl:w-16"
+              class="phone:h-6 phone:w-6 sm:h-6 sm:w-6 lg:h-12 lg:w-12 2xl:h-16 2xl:w-16"
             ></PresentationChartLineIcon>
-            <h1 class="sm:text-xl lg:text-3xl 2xl:text-5xl font-bold">
+            <h1
+              class="phone:text-lg sm:text-xl lg:text-3xl 2xl:text-5xl font-bold"
+            >
               All Topics
             </h1>
           </div>
@@ -151,7 +151,7 @@ onMounted(async () => {
               <Transition name="slide">
                 <div
                   v-if="isSeearchBtn"
-                  class="absolute sm:top-1.5 lg:top-0 2xl:top-2 -left-44"
+                  class="absolute phone:top-1 sm:top-1.5 lg:top-0 2xl:top-2 -left-44"
                 >
                   <form @submit.prevent="searchTopic">
                     <input
@@ -159,7 +159,7 @@ onMounted(async () => {
                       id="title"
                       v-model="title.val"
                       placeholder="Search by topic's title"
-                      class="block w-full sm:h-6 lg:h-10 border-none bg-slate-200 mb-2 p-2 rounded-md focus:outline-none focus:bg-blue-50 text-sm"
+                      class="block w-full phone:h-6 sm:h-6 lg:h-10 border-none bg-slate-200 mb-2 p-2 rounded-md focus:outline-none focus:bg-blue-50 text-sm"
                     />
                   </form>
                 </div>
@@ -167,24 +167,18 @@ onMounted(async () => {
 
               <base-button @click="isSeearchBtn = !isSeearchBtn">
                 <li>
-                  <MagnifyingGlassIcon
-                    class="sm:h-10 sm:w-10 lg:h-10 lg:w-10 2xl:h-14 2xl:w-14 bg-slate-900 p-2 bg-opacity-10 text-slate-900 rounded-full"
-                  ></MagnifyingGlassIcon>
+                  <MagnifyingGlassIcon class="topic-icon"></MagnifyingGlassIcon>
                 </li>
               </base-button>
 
               <base-button @click="isUserBtn = !isUserBtn">
                 <li class="relative">
-                  <img
-                    src="../assets/header/1.jpg"
-                    alt="cat-profile"
-                    class="sm:h-10 sm:w-10 lg:h-10 lg:w-10 2xl:h-14 2xl:w-14 rounded-full object-cover"
-                  />
+                  <PhUser class="topic-icon"></PhUser>
 
                   <Transition name="popup">
                     <base-card
                       v-if="isUserBtn"
-                      class="sm:hidden lg:block absolute w-20 top-10 left-2 flex flex-col gap-1 text-xs"
+                      class="phone:hidden lg:block absolute w-20 lg:top-10 2xl:top-14 left-2 flex flex-col gap-1 text-xs"
                     >
                       <base-button
                         @click="logout"
@@ -201,9 +195,9 @@ onMounted(async () => {
         </div>
 
         <!-- subhead add topic -->
-        <div class="flex justify-between mb-8">
+        <div class="sm:flex sm:flex-row sm:justify-between mb-8">
           <div>
-            <form class="flex gap-2">
+            <form class="flex gap-2 phone:mb-6 sm:mb-0">
               <base-card>
                 <select
                   name="topic"
@@ -261,7 +255,9 @@ onMounted(async () => {
                 <div
                   class="flex justify-center items-center font-semibold sm:text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl"
                 >
-                  <h2 class="sm:text-lg lg:text-xl 2xl:text-2xl">
+                  <h2
+                    class="phone:text-base sm:text-lg lg:text-xl 2xl:text-2xl"
+                  >
                     {{ topic.datail }}
                   </h2>
                 </div>
@@ -277,7 +273,7 @@ onMounted(async () => {
                   ></div>
                 </div>
                 <p
-                  class="justify-self-center sm:text-base lg:text-lg 2xl:text-xl font-semibold text-slate-400"
+                  class="justify-self-center phone:text-sm sm:text-base lg:text-lg 2xl:text-xl font-semibold text-slate-400"
                 >
                   {{ topic.progression }}%
                 </p>
@@ -286,7 +282,7 @@ onMounted(async () => {
               <div class="flex gap-2 justify-center items-center">
                 <p class="justify-self-center">{{ topic.status }}</p>
                 <FlagIcon
-                  class="sm:h-2 sm:w-2 xl:h-4 xl:w-4"
+                  class="phone:h-2 phone:w-2 sm:h-3 sm:w-3 xl:h-4 xl:w-4"
                   :class="{
                     myTopicStatusComplete: isStatusComplete(topic),
                     myTopicStatusPending: isStatusPending(topic),
@@ -327,6 +323,14 @@ onMounted(async () => {
                     <TrashIcon class="h-4 w-4"></TrashIcon>
                     Remove
                   </base-button>
+                  <base-button
+                    class="text-xs flex justify-center items-center gap-2"
+                    mode="my-basic-style-addUser"
+                    @click="openAddUser(topic)"
+                  >
+                    <PhUserPlus class="h-4 w-4"></PhUserPlus>
+                    Add user
+                  </base-button>
                 </div>
 
                 <!-- import component -->
@@ -337,6 +341,11 @@ onMounted(async () => {
                   v-if="isRemoveItem"
                   :topic-id="topic.id"
                 ></RemoveTopic>
+
+                <AddTopicUser
+                  v-if="isAddUser"
+                  :topic-id="topic.id"
+                ></AddTopicUser>
               </base-dialog>
             </base-card>
           </div>
@@ -365,14 +374,18 @@ onMounted(async () => {
 
 .my-card-container-topics {
   @apply items-center 
-  sm:grid sm:grid-cols-myTopicTemplate
-  sm:text-base sm:mb-6
+  phone:grid phone:grid-cols-myTopicTemplate
+  phone:text-sm sm:text-base phone:mb-6
   lg:text-lg lg:mb-8
   2xl:text-xl 2xl:mb-6;
 }
 
 .my-button-test {
   @apply cursor-pointer bg-black text-slate-50;
+}
+
+.topic-icon {
+  @apply phone:h-8 phone:w-8 sm:h-10 sm:w-10 lg:h-10 lg:w-10 2xl:h-14 2xl:w-14 bg-slate-900 p-2 bg-opacity-10 text-slate-900 rounded-full;
 }
 
 /* Topic status */

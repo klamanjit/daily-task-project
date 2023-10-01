@@ -59,12 +59,12 @@ async function authorization() {
     urlencodedForSignup.append("username", username.value.val);
     urlencodedForSignup.append("first_name", firstname.value.val);
     urlencodedForSignup.append("last_name", lastname.value.val);
-    urlencodedForSignup.append("include", "true");
+    // urlencodedForSignup.append("include", "true");
 
     const urlencodedForLogin = new URLSearchParams();
     urlencodedForLogin.append("email", email.value.val);
     urlencodedForLogin.append("password", password.value.val);
-    urlencodedForLogin.append("include", "true");
+    // urlencodedForLogin.append("include", "true");
 
     const requestOptions = {
       method: "POST",
@@ -87,8 +87,9 @@ async function authorization() {
 
     const responseData = await response.json();
 
-    localStorage.setItem("token", responseData.token);
-    localStorage.setItem("username", responseData.user.username);
+    localStorage.setItem("token", (responseData || "").token);
+    localStorage.setItem("username", (responseData.user || "").username);
+    localStorage.setItem("refreshToken", responseData.refreshToken);
     localStorage.setItem("userId", responseData.user.id);
     router.replace("/");
 
@@ -109,12 +110,12 @@ async function authorization() {
     v-if="true"
   >
     <base-card
-      class="absolute inset-1/2 -translate-x-1/2 -translate-y-1/2 min-h-fit sm:w-1/2 lg:w-1/3 2xl:w-1/4"
+      class="absolute inset-1/2 -translate-x-1/2 -translate-y-1/2 min-h-fit phone:w-1/2 sm:w-1/2 lg:w-1/3 2xl:w-1/4"
     >
       <!-- 1st colunm -->
       <form
         @submit.prevent="authorization"
-        class="grid grid-cols-myLoginTemplate p-2 gap-4 h-full w-full"
+        class="phone:flex phone:flex-col sm:grid sm:grid-cols-myLoginTemplate p-2 gap-4 h-full w-full"
       >
         <div
           class="flex flex-col gap-2 items-center justify-center text-slate-900"
@@ -202,7 +203,7 @@ async function authorization() {
 
         <!-- 2nd column -->
         <button
-          class="flex flex-col gap-2 font-bold items-center justify-center bg-gradient-to-br from-slate-800 to-gray-800 rounded-md"
+          class="phone:flex phone:p-2 sm:p-0 sm:flex-col gap-2 font-bold items-center justify-center bg-gradient-to-br from-slate-800 to-gray-800 rounded-md"
         >
           <ArrowRightOnRectangleIcon
             class="h-6 w-6"

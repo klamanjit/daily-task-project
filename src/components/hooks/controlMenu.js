@@ -1,55 +1,3 @@
-// import { ref, computed, inject } from "vue";
-
-// export default function useControlMenu() {
-//   // Add Item
-//   const isAddItem = ref(false);
-
-//   function changeAddItemToTrue() {
-//     isAddItem.value = true;
-//   }
-
-//   function changeAddItemToFalse() {
-//     isAddItem.value = false;
-//   }
-
-//   // Edit Item
-//   const isEditItem = ref(false);
-
-//   function openEditItem(item) {
-//     isEditItem.value = true;
-//     item.editStatus = false;
-//   }
-
-//   function closeEditItem(item) {
-//     isEditItem.value = false;
-//     item.editStatus = false;
-//   }
-//   // Remove item
-//   const isRemoveItem = ref(false);
-
-//   function openRemoveItem(item) {
-//     isRemoveItem.value = true;
-//     item.editStatus = false;
-//   }
-
-//   function closeRemoveItem(item) {
-//     isRemoveItem.value = false;
-//     item.editStatus = false;
-//   }
-
-//   return {
-//     isAddItem,
-//     changeAddItemToTrue,
-//     changeAddItemToFalse,
-//     isEditItem,
-//     openEditItem,
-//     closeEditItem,
-//     isRemoveItem,
-//     openRemoveItem,
-//     closeRemoveItem,
-//   };
-// }
-
 import { ref, computed, inject } from "vue";
 
 export default function useControlMenu() {
@@ -70,26 +18,26 @@ export default function useControlMenu() {
   function openEditItem(item) {
     isEditItem.value = true;
     isRemoveItem.value = false;
-    // item.editStatus = false;
+    isAddUser.value = false;
   }
 
-  // function closeEditItem(item) {
-  //   isEditItem.value = false;
-  //   item.editStatus = false;
-  // }
   // Remove item
   const isRemoveItem = ref(false);
 
   function openRemoveItem(item) {
     isRemoveItem.value = true;
     isEditItem.value = false;
-    // item.editStatus = false;
+    isAddUser.value = false;
   }
 
-  // function closeRemoveItem(item) {
-  //   isRemoveItem.value = false;
-  //   item.editStatus = false;
-  // }
+  // Add topic user
+  const isAddUser = ref(false);
+
+  function openAddUser(item) {
+    isAddUser.value = true;
+    isEditItem.value = false;
+    isRemoveItem.value = false;
+  }
 
   // Close Menu
   function closeMenu(item) {
@@ -109,6 +57,8 @@ export default function useControlMenu() {
     openEditItem,
     isRemoveItem,
     openRemoveItem,
+    isAddUser,
+    openAddUser,
     closeMenu,
     isPopupMenu,
   };
