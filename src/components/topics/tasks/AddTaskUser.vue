@@ -1,18 +1,14 @@
 <script setup>
-import { ref } from "vue";
 import { useRoute } from "vue-router";
 
 import useValidateTask from "../../hooks/validateTask";
 
-const userId = localStorage.getItem("userId");
 const route = useRoute();
 
 const props = defineProps({
   taskId: String,
   required: true,
 });
-
-console.log(props.taskId);
 
 const { userType, numOfUserId, error } = useValidateTask();
 
@@ -48,8 +44,6 @@ async function addTaskUser() {
     }
 
     location.reload();
-
-    console.log(responseData);
   } catch (err) {
     console.log(err);
   }

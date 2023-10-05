@@ -14,8 +14,6 @@ const props = defineProps({
   },
 });
 
-console.log(props.taskId);
-
 // Route
 const route = useRoute();
 
@@ -100,7 +98,6 @@ async function editTask() {
   try {
     validationForm();
     if (!isForm.value) {
-      console.log("not valid");
       return;
     }
 

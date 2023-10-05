@@ -9,8 +9,6 @@ const props = defineProps({
   },
 });
 
-console.log(props.topicId);
-
 // Form section
 const { title, isForm, validationRemoveForm, error, clearInvalid } =
   useValidateTopic();
@@ -31,7 +29,6 @@ async function deleteData() {
   }
 
   try {
-    console.log("valid");
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
     myHeaders.append("token", `${token}`);

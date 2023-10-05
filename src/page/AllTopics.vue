@@ -28,9 +28,6 @@ import RemoveTopic from "../components/topics/RemoveTopic.vue";
 import AddTopicUser from "../components/topics/AddTopicUser.vue";
 import useValidateLogin from "../components/hooks/validateLogin";
 
-// Loading
-const isLoading = ref(false);
-
 // Route
 const route = useRoute();
 
@@ -97,6 +94,7 @@ const {
   isAddUser,
   openAddUser,
   closeMenu,
+  isLoading,
 } = useControlMenu();
 
 // clear input after fetch

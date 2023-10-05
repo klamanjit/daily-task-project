@@ -48,11 +48,6 @@ const title = ref({
 const isUserBtn = ref(false);
 
 const { logout } = useValidateLogin();
-
-// function logout() {
-//   localStorage.removeItem("token");
-//   router.replace("/");
-// }
 </script>
 
 <template>
@@ -111,11 +106,6 @@ const { logout } = useValidateLogin();
     <base-button @click="isUserBtn = !isUserBtn">
       <li class="relative">
         <PhUser class="my-bell-icon"></PhUser>
-        <!-- <img
-          src="../../assets/header/1.jpg"
-          alt="cat-profile"
-          class="sm:h-10 sm:w-10 lg:h-10 lg:w-10 2xl:h-14 2xl:w-14 rounded-full object-cover"
-        /> -->
 
         <Transition name="popup">
           <base-card

@@ -1,15 +1,9 @@
 <script setup>
-import { ref } from "vue";
 import useValidateTopic from "../hooks/validateTopic";
 
 // Form section
 const { emojis, title, emoji, isForm, validationForm, error, clearInvalid } =
   useValidateTopic();
-
-// clear input after fetch
-function clear() {
-  location.reload();
-}
 
 // user
 const token = localStorage.getItem("token");
@@ -49,39 +43,8 @@ async function registerTopic() {
       throw new Error(responseData.error.message || "fail to fetch");
     }
 
-    console.log(responseData);
     // clear after fetch
-    clear();
-
-    // const newTopic = {
-
-    //   // id: ` ${topics.value.length + 1}`,
-    //   emoji: emoji.value.val,
-    //   datail: title.value.val,
-    //   editStatus: false,
-    //   tasks: ref([]),
-    //   // tasks: ref([
-    //   //   {
-    //   //     id: "1",
-    //   //     emoji: "✌️",
-    //   //     title: "[Memoji]",
-    //   //     detail: "- Create Prototype Mobile for Get Notification in Principle",
-    //   //     month: "Mar",
-    //   //     date: "26",
-    //   //     status: "InProgress",
-    //   //   },
-    //   //   {
-    //   //     id: "2",
-    //   //     emoji: "✌️",
-    //   //     title: "[Lux]",
-    //   //     detail: "- Design Lux Pet Shop Product Page Responsive Website",
-    //   //     month: "Mar",
-    //   //     date: "29",
-    //   //     status: "NextUp",
-    //   //   },
-    //   // ]),
-    // };
-    // topics.value.push(newTopic);
+    location.reload();
   } catch (err) {
     error.value = err.message || "Something went wrong";
   }

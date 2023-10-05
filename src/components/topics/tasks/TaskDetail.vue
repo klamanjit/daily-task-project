@@ -30,9 +30,6 @@ import { PhUserPlus } from "@phosphor-icons/vue";
 
 const route = useRoute();
 
-// Loading
-const isLoading = ref(false);
-
 // Topic section
 const topics = inject("topics");
 const users = inject("users");
@@ -41,7 +38,6 @@ const topicSelected = computed(() => {
   const selectedTopic = topics.value.find(
     (topic) => topic.id === route.params.topicId
   );
-  console.log(selectedTopic);
 
   return selectedTopic || {};
 });
@@ -58,8 +54,6 @@ const topicHeader = computed(() => {
 const topicTasks = computed(() => {
   return (topicSelected.value && topicSelected.value.tasks) || [];
 });
-
-console.log(topicTasks.value);
 
 const nextUpTask = computed(() => {
   return (topicSelected.value.tasks || []).filter(
@@ -102,6 +96,7 @@ const {
   isAddUser,
   openAddUser,
   closeMenu,
+  isLoading,
 } = useControlMenu();
 
 // clear input after fetch

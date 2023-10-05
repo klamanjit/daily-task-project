@@ -12,8 +12,6 @@ const props = defineProps({
 
 const { topicId: propTopicId } = toRefs(props);
 
-console.log(propTopicId.value);
-
 // Form section
 const { emojis, title, emoji, isForm, validationForm, error, clearInvalid } =
   useValidateTopic();

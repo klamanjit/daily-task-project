@@ -1,16 +1,10 @@
 <script setup>
-import { ref } from "vue";
-
 import useValidateTopic from "../hooks/validateTopic";
-
-const userId = localStorage.getItem("userId");
 
 const props = defineProps({
   topicId: String,
   required: true,
 });
-
-console.log(props.topicId);
 
 const { userType, numOfUserId, error } = useValidateTopic();
 
@@ -45,9 +39,6 @@ async function addTopicUser() {
     }
 
     location.reload();
-
-    console.log(props.topicId);
-    console.log(responseData);
   } catch (err) {
     console.log(err);
   }

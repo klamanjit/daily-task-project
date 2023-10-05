@@ -7,7 +7,7 @@ import {
   EnvelopeIcon,
   IdentificationIcon,
 } from "@heroicons/vue/24/solid";
-import { computed, ref } from "vue";
+import { computed } from "vue";
 import useValidateLogin from "../components/hooks/validateLogin.js";
 import { useRouter } from "vue-router";
 
@@ -46,7 +46,6 @@ async function authorization() {
   try {
     validateForm();
     if (!isForm.value) {
-      console.log("not valid");
       return;
     }
 
@@ -59,12 +58,10 @@ async function authorization() {
     urlencodedForSignup.append("username", username.value.val);
     urlencodedForSignup.append("first_name", firstname.value.val);
     urlencodedForSignup.append("last_name", lastname.value.val);
-    // urlencodedForSignup.append("include", "true");
 
     const urlencodedForLogin = new URLSearchParams();
     urlencodedForLogin.append("email", email.value.val);
     urlencodedForLogin.append("password", password.value.val);
-    // urlencodedForLogin.append("include", "true");
 
     const requestOptions = {
       method: "POST",
@@ -87,17 +84,15 @@ async function authorization() {
 
     const responseData = await response.json();
 
+    if (!response.ok) {
+      throw new Error(responseData.error.message || "fail to fetch");
+    }
+
     localStorage.setItem("token", (responseData || "").token);
     localStorage.setItem("username", (responseData.user || "").username);
     localStorage.setItem("refreshToken", responseData.refreshToken);
     localStorage.setItem("userId", responseData.user.id);
     router.replace("/");
-
-    if (!response.ok) {
-      throw new Error(responseData.error.message || "fail to fetch");
-    }
-
-    console.log(responseData);
   } catch (err) {
     console.log(err);
   }

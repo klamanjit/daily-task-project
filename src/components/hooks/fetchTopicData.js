@@ -13,7 +13,7 @@ async function useGetTopics(topicesSet, isLoading) {
       method: "GET",
       headers: new Headers({
         "ngrok-skip-browser-warning": "69420",
-        token: token,
+        token: localStorage.getItem("token"),
       }),
       redirect: "follow",
     };
@@ -26,24 +26,24 @@ async function useGetTopics(topicesSet, isLoading) {
       throw new Error(responseData.error.message || "fail to load topic");
     }
 
-    console.log(response);
-    console.log(responseData);
-    topicesSet.value.length = 0;
-    responseData.topics.forEach((topic) => {
-      const setTopic = {
-        id: topic.id,
-        emoji: topic.emoji,
-        datail: topic.title,
-        editStatus: topic.editStatus,
-        status: topic.status,
-        progression: topic.progression,
-        tasks: topic.tasks,
-      };
+    if (responseData.topics) {
+      topicesSet.value.length = 0;
+      responseData.topics.forEach((topic) => {
+        const setTopic = {
+          id: topic.id,
+          emoji: topic.emoji,
+          datail: topic.title,
+          editStatus: topic.editStatus,
+          status: topic.status,
+          progression: topic.progression,
+          tasks: topic.tasks,
+        };
 
-      topicesSet.value.push(setTopic);
-    });
+        topicesSet.value.push(setTopic);
+      });
 
-    isLoading.value = false;
+      isLoading.value = false;
+    }
   } catch (err) {
     console.log(err);
   }
@@ -61,8 +61,6 @@ async function useSearchTopic(topicesSet, fnClear, titlePara, isLoading) {
       redirect: "follow",
     };
 
-    console.log(titlePara.value.val);
-
     // let url = `${urlMain}/topic/search?title=${titlePara.value.val}`;
     let url = `${urlMain}/search/topic?title=${titlePara.value.val}`;
 
@@ -72,24 +70,24 @@ async function useSearchTopic(topicesSet, fnClear, titlePara, isLoading) {
       throw new Error(responseData.error.message || "fail to load topic");
     }
 
-    console.log(response);
-    console.log(responseData);
-    topicesSet.value.length = 0;
-    responseData.topics.forEach((topic) => {
-      const setTopic = {
-        id: topic.id,
-        emoji: topic.emoji,
-        datail: topic.title,
-        editStatus: topic.editStatus,
-        status: topic.status,
-        progression: topic.progression,
-        tasks: topic.tasks,
-      };
+    if (responseData.topics) {
+      topicesSet.value.length = 0;
+      responseData.topics.forEach((topic) => {
+        const setTopic = {
+          id: topic.id,
+          emoji: topic.emoji,
+          datail: topic.title,
+          editStatus: topic.editStatus,
+          status: topic.status,
+          progression: topic.progression,
+          tasks: topic.tasks,
+        };
 
-      topicesSet.value.push(setTopic);
-    });
+        topicesSet.value.push(setTopic);
+      });
 
-    isLoading.value = false;
+      isLoading.value = false;
+    }
 
     // clear after fetch
     fnClear();
@@ -100,15 +98,13 @@ async function useSearchTopic(topicesSet, fnClear, titlePara, isLoading) {
 
 // Tasks
 async function useGetTasks(topicSet, topicId, isLoading) {
-  console.log("Hi");
-
   try {
     isLoading.value = true;
     const requestOptions = {
       method: "GET",
       headers: new Headers({
         "ngrok-skip-browser-warning": "69420",
-        token: token,
+        token: localStorage.getItem("token"),
       }),
       redirect: "follow",
     };
@@ -124,27 +120,26 @@ async function useGetTasks(topicSet, topicId, isLoading) {
       throw new Error(responseData.error.message || "fail to load tasks");
     }
 
-    console.log(response);
-    console.log(responseData);
+    if (responseData.tasks) {
+      topicSet.value.tasks.length = 0;
 
-    topicSet.value.tasks.length = 0;
+      responseData.tasks.forEach((task) => {
+        const setTask = {
+          id: task.id,
+          emoji: task.emoji,
+          title: task.title,
+          detail: task.detail,
+          editStatus: task.editStatus,
+          month: task.due_time.month,
+          date: `${task.due_time.day}`,
+          status: task.status,
+        };
+        topicSet.value.tasks.push(setTask);
+        // tasksTest.value.push(setTask);
+      });
 
-    responseData.tasks.forEach((task) => {
-      const setTask = {
-        id: task.id,
-        emoji: task.emoji,
-        title: task.title,
-        detail: task.detail,
-        editStatus: task.editStatus,
-        month: task.due_time.month,
-        date: `${task.due_time.day}`,
-        status: task.status,
-      };
-      topicSet.value.tasks.push(setTask);
-      // tasksTest.value.push(setTask);
-    });
-
-    isLoading.value = false;
+      isLoading.value = false;
+    }
   } catch (err) {
     console.log(err);
   }
@@ -182,29 +177,29 @@ async function useSearchTask(
       throw new Error(responseData.error.message || "fail to search tasks");
     }
 
-    console.log(response);
-    console.log(responseData);
-    topicSet.value.tasks.length = 0;
+    if (responseData.tasks) {
+      topicSet.value.tasks.length = 0;
 
-    responseData.tasks.forEach((task) => {
-      const setTask = {
-        id: task.id,
-        emoji: task.emoji,
-        title: task.title,
-        detail: task.detail,
-        editStatus: task.editStatus,
-        month: task.due_time.month,
-        date: `${task.due_time.day}`,
-        status: task.status,
-      };
+      responseData.tasks.forEach((task) => {
+        const setTask = {
+          id: task.id,
+          emoji: task.emoji,
+          title: task.title,
+          detail: task.detail,
+          editStatus: task.editStatus,
+          month: task.due_time.month,
+          date: `${task.due_time.day}`,
+          status: task.status,
+        };
 
-      topicSet.value.tasks.push(setTask);
-    });
+        topicSet.value.tasks.push(setTask);
+      });
 
-    isLoading.value = false;
+      isLoading.value = false;
 
-    // clear after fetch
-    fnClear(titleValue, searchBtn);
+      // clear after fetch
+      fnClear(titleValue, searchBtn);
+    }
   } catch (err) {
     console.log(err);
   }
@@ -229,8 +224,13 @@ async function useLogout() {
       throw new Error(responseData.error.message || `fail to logout`);
     }
 
-    console.log(responseData);
-    localStorage.removeItem("token");
+    if (responseData.success) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("refreshToken");
+      localStorage.removeItem("username");
+      localStorage.removeItem("userId");
+      router.replace("/login");
+    }
   } catch (err) {
     console.log(err);
   }
@@ -255,9 +255,10 @@ async function useRefreshToken() {
     if (!response.ok) {
       throw new Error(responseData.error.message || "fail to refresh token");
     }
-
-    localStorage.setItem("token", responseData.token);
-    localStorage.setItem("refreshToken", responseData.refreshToken);
+    if (responseData) {
+      localStorage.setItem("token", responseData.token);
+      localStorage.setItem("refreshToken", responseData.refreshToken);
+    }
   } catch (err) {
     console.log(err);
   }
@@ -287,7 +288,6 @@ async function useSearchUser(usernamePara, errorPara, userObj) {
       throw new Error(responseData.error.message || `fail to search for user`);
     }
 
-    console.log(responseData);
     if (responseData[0]) {
       usernamePara.val = "";
       errorPara.isValid = false;

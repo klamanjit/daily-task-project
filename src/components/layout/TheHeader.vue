@@ -14,8 +14,9 @@ import {
 } from "@heroicons/vue/24/solid";
 
 import { useRoute } from "vue-router";
-import { ref, computed, inject } from "vue";
-import useValidateLogin from "../hooks/validateLogin";
+import { computed, inject } from "vue";
+
+import useUserLogout from "../hooks/fetchUserLogout";
 import useControlMenu from "../hooks/controlMenu";
 
 const route = useRoute();
@@ -26,11 +27,7 @@ function topicRoute(topic) {
   return `/topics/1/${topic.id}`;
 }
 
-// const isPopupMenu = ref(false);
-
 const { isPopupMenu } = useControlMenu();
-
-console.log(route.path);
 
 const controlAllTasks = computed(() => {
   if (route.path === "/" || route.path === "/users") {
@@ -41,7 +38,7 @@ const controlAllTasks = computed(() => {
 });
 
 // User
-const { logout } = useValidateLogin();
+const { logout } = useUserLogout();
 </script>
 
 <template>

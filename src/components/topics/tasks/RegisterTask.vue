@@ -21,8 +21,6 @@ const topicId = computed(() => {
   return route.params.topicId;
 });
 
-console.log(topicId.value);
-
 // Topic section
 const topics = inject("topics");
 
@@ -156,20 +154,6 @@ async function registerTask() {
     if (!response.ok) {
       throw new Error(responseData.error.message || "fail to post task");
     }
-
-    console.log(response);
-
-    // // send dummy
-    // const newTask = {
-    //   id: getRandomArbitary(10, 20),
-    //   emoji: emoji.value.val,
-    //   title: `[${title.value.val}]`,
-    //   detail: `-${detail.value.val}`,
-    //   month: month.value.val,
-    //   date: date.value.val,
-    //   status: status.value.val,
-    // };
-    // topicSelected.value.tasks.push(newTask);
 
     // clear input after fetch
     clear();

@@ -290,6 +290,8 @@ const topics = ref([
   // },
 ]);
 
+// Add topic
+
 provide("topics", topics);
 provide("store", store);
 </script>

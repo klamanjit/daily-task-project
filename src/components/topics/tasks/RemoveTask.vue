@@ -11,8 +11,6 @@ const props = defineProps({
   },
 });
 
-console.log(props.taskId);
-
 // Route
 const route = useRoute();
 
@@ -61,10 +59,9 @@ async function editTask() {
 
     const response = await fetch(url, requestOptions);
     const responseData = await response.json();
-    console.log(response);
-    console.log(responseData);
+
     if (!response.ok) {
-      throw new Error("fali to delete");
+      throw new Error(responseData.error.message || "fali to delete");
     }
 
     // clear input after fetch

@@ -22,7 +22,6 @@ const router = createRouter({
       path: "/topics/1",
       component: AllTopics,
       name: "topics",
-      // children: [{ path: ":topicId", component: TaskDetail }],
     },
     { path: "/topics/1/:topicId", component: TaskDetail, name: "task" },
     { path: "/:notFound(.*)", component: NotFound, name: "notFound" },

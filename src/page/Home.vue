@@ -9,9 +9,6 @@ import { PhUser } from "@phosphor-icons/vue";
 const topics = inject("topics");
 const users = inject("users");
 
-// Loading
-const isLoading = ref(false);
-
 const isLogin = computed(() => {
   return !!localStorage.getItem("token");
 });
@@ -46,14 +43,12 @@ function clipPathStyle(topic) {
   };
 }
 
-console.log(currentTopic.value);
-
 const topicSelected = computed(() => {
   return topics.value.find((topic) => topic.id === currentTopic.value.id);
 });
 
 // popup menu for sm responsive
-const { isPopupMenu } = useControlMenu();
+const { isPopupMenu, isLoading } = useControlMenu();
 
 onMounted(async () => {
   await useGetTopics(topics, isLoading);

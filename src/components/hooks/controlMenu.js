@@ -49,6 +49,9 @@ export default function useControlMenu() {
   // Popupmenu for sm responsive
   const isPopupMenu = ref(false);
 
+  // Loading
+  const isLoading = ref(false);
+
   return {
     isAddItem,
     changeAddItemToTrue,
@@ -61,5 +64,6 @@ export default function useControlMenu() {
     openAddUser,
     closeMenu,
     isPopupMenu,
+    isLoading,
   };
 }
